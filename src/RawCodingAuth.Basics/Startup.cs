@@ -16,6 +16,8 @@ namespace RawCodingAuth.Basics
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // MapDefaultControllerRoute() ifadesinin kullanacaðý gerekli servisleri enjeksiyon mekanizmasýna eklemen gerekir.
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,10 +32,8 @@ namespace RawCodingAuth.Basics
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                // Standart routing: Controller=Home, Action=Index
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
