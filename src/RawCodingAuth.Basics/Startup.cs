@@ -44,12 +44,18 @@ namespace RawCodingAuth.Basics
                 app.UseDeveloperExceptionPage();
             }
 
+            // Sýralama önemli.
+            // Authorization'dan önce gelmesi gerekir.
+            // Çünkü ilk olarak kullanýcýnýn kim olduðunu bilmemiz gerekir,
+            //    hangi endpoint'leri çaðýrmaya yetkili olup olmadýðýný deðil!
+            app.UseAuthentication();
+
             app.UseRouting();
 
             // Her bir request ile beraber çalýþacak Authorization check iþlemleri için gerekli middleware
             // [Authorize] attribute'unu kullanmak için de gereklidir.
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 // Standart routing: Controller=Home, Action=Index
