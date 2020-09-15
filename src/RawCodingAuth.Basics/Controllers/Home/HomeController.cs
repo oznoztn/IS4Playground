@@ -33,14 +33,31 @@ namespace RawCodingAuth.Basics.Controllers.Home
                 new Claim("grandma.garden", "true")
             };
 
+            List<Claim> secretGardenClaims = new List<Claim>()
+            {
+                // Bu alttaki bir claim'in ortak olmasına dikkat et.
+                // Demek ki her iki yerle aynı e-mail adresi ile bir bağlantım var.
+                new Claim(ClaimTypes.Name, "Ozan ZzZz"),
+                new Claim(ClaimTypes.Email, "ozan@ozten.com"),
+
+                // secret-garden'a özel claim'ler.
+                new Claim("level", "master"),
+                new Claim("xp", "12"),
+                new Claim("mastery", "archery"),
+                new Claim("path", "tao")
+            };
+
             // Bu claim'leri baz alarak bir kimlik oluşturuyoruz
             ClaimsIdentity grandmaIdentity = new ClaimsIdentity(grandmaClaims, authenticationType: "Grandma Identity");
+
+            ClaimsIdentity secretGardenIdentity = new ClaimsIdentity(secretGardenClaims, "Secret Garden Identity");
 
             ClaimsPrincipal userPrincipal = new ClaimsPrincipal(new[]
             {
                 // Birden fazla otorite senin kim olduğuna dair bilgi verebileceğine göre,
                 // ClaimsIdentity'ye sahip olabilirsin.
-                grandmaIdentity
+                grandmaIdentity,
+                secretGardenIdentity
             });
 
             // Kullanıcı sisteme sokuyoruz (LOGIN).
@@ -59,7 +76,8 @@ namespace RawCodingAuth.Basics.Controllers.Home
              * 3)
              * Birden fazla otorite senin kim olduğuna dair bilgi sağlayabilir.
              * Örneğin; Grandman, Google, Facebook, E-Devlet, vs.
-             */
+             * Yukarda iki tane otorite var: Grandma ve SecretGarden
+             * */
         }
 
         [Authorize]
