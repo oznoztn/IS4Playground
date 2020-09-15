@@ -77,6 +77,15 @@ namespace RawCodingAuth.Basics.Controllers.Home
              * Birden fazla otorite senin kim olduğuna dair bilgi sağlayabilir.
              * Örneğin; Grandman, Google, Facebook, E-Devlet, vs.
              * Yukarda iki tane otorite var: Grandma ve SecretGarden
+             *
+             * 4)
+             * Identity framework kullanıcıya bağlı CLAIM'leri veritabanında tutar ve
+             * kullanıcı (identity'deki) ilgili manager sınıfıyla çekildiğinde
+             * zaten otomatik olarak kullanıcıya SET eder.
+             *
+             * Buradaki implementasyon bir nevi low-level implementasyon.
+             * Yine de neyin nasıl set edildiğini bilmekte fayda var.
+             *
              * */
         }
 
