@@ -16,6 +16,22 @@ namespace RawCodingAuth.Basics
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Altta UseAuthorization dedik fakat Authz için hangi scheme'i kullanmasý gerektiðini belirtmedik.
+            // Yani varsayýlan bir AuthenticationScheme tanýmlamasý yapmamýz gerekiyor.
+            // Aksi halde exception: No authenticationScheme was specified, and there was no DefaultChallengeScheme found
+            services
+                .AddAuthentication("CookieAuth")
+                .AddCookie("CookieAuth", config =>
+                {
+                    // Authentication iþlemi için bakacaðý cookie'nin ismi:
+                    //      Bu isimde bir cookie bulamazsa authentication iþlemi baþarýsýz addedilecektir.
+                    config.Cookie.Name = "Grandmas.Cookie"; 
+
+                    // Authentication iþlemi baþarýsýz ise kullanýcýnýn LOGIN için yönlendirileceði adres:
+                    config.LoginPath = "/Home/Index";
+                });
+
+
             // MapDefaultControllerRoute() ifadesinin kullanacaðý gerekli servisleri enjeksiyon mekanizmasýna eklemen gerekir.
             services.AddControllersWithViews();
         }
@@ -29,6 +45,10 @@ namespace RawCodingAuth.Basics
             }
 
             app.UseRouting();
+
+            // Her bir request ile beraber çalýþacak Authorization check iþlemleri için gerekli middleware
+            // [Authorize] attribute'unu kullanmak için de gereklidir.
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
