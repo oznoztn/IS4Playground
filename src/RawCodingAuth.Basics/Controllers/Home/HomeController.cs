@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 
 namespace RawCodingAuth.Basics.Controllers.Home
 {
@@ -101,8 +102,16 @@ namespace RawCodingAuth.Basics.Controllers.Home
         [Authorize]
         public IActionResult Secret()
         {
-            var x = HttpContext.User.Claims.ToList();
             return View();
+        }
+
+        // User.Claims.Any(t => t.Type == ClaimTypes.Role) == true
+        //   olan ClaimsPrinciap için...
+        //   Kısacası kullanıcının 'role' claimine bakıyor, belirtilen rol var mı yok mu diye.
+        [Authorize(Roles = "god-mode")]
+        public IActionResult GodMode()
+        {
+            return Content("God mode");
         }
     }
 }
