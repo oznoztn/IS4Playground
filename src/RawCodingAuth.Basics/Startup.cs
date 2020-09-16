@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +33,10 @@ namespace RawCodingAuth.Basics
              * AuthorizationRequirement'lar AuthorizationHandler sýnýflarý tarafýndan iþlenir edilir.
              *
              * Tüm bunlar Authorization Policy kavramýný oluþtururlar.
+             *
+             * .NET TARAFINDAKÝ KARÞILIKLAR
+             * Authorization Requirement => IAuthorizationRequirement
+             * Authorization Handler     => AuthorizationHandler<IAuthorizationRequirement_Implementation>
              */
 
             services.AddAuthorization(config =>
@@ -48,6 +53,13 @@ namespace RawCodingAuth.Basics
                             // Default Policy'yi default policy yapan tek gereksinim.
                             // Bunu da eklemezsen "en az bir tane auth requirement'ý eklemen gerek" diye hata alýrsýn.
                         .RequireAuthenticatedUser() 
+                            // Bu Authorization poliçesi belirli bir CLAIM tipini zorunlu kýlýyor
+                            //      Bu arada, "Role" Microsoft'un tanýmladýðý CUSTOM bir CLAIM.
+                            //      Örneðin name, email gibi standart claim'lerden biri deðil.
+                            .RequireClaim(ClaimTypes.Role, "admin")
+                            // Bir CLAIM'in daha varlýðýný þart koþuyor:
+                            //      Kullanýcýnýn authorized olabilmesi için.
+                            .RequireClaim(ClaimTypes.Email, "ozan@ozten.com")
                         .Build();
 
                 // kendi oluþturduðumuz þeyi set ediyoruz:

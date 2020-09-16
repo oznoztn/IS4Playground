@@ -20,6 +20,12 @@ namespace RawCodingAuth.Basics.Controllers.Home
         [HttpPost]
         public IActionResult Authenticate()
         {
+            List<Claim> roleClaims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Role, "root"),
+                new Claim(ClaimTypes.Role, "admin")
+            };
+
             List<Claim> grandmaClaims = new List<Claim>()
             {
                 // Senin kim olduğunu GRANDMA söylüyor. Burada OTORİTE o.
@@ -52,12 +58,15 @@ namespace RawCodingAuth.Basics.Controllers.Home
 
             ClaimsIdentity secretGardenIdentity = new ClaimsIdentity(secretGardenClaims, "Secret Garden Identity");
 
+            ClaimsIdentity rolesIdentity = new ClaimsIdentity(roleClaims, "RawCodingAuth Identity");
+
             ClaimsPrincipal userPrincipal = new ClaimsPrincipal(new[]
             {
                 // Birden fazla otorite senin kim olduğuna dair bilgi verebileceğine göre,
                 // ClaimsIdentity'ye sahip olabilirsin.
                 grandmaIdentity,
-                secretGardenIdentity
+                secretGardenIdentity,
+                rolesIdentity
             });
 
             // Kullanıcı sisteme sokuyoruz (LOGIN).
@@ -92,6 +101,7 @@ namespace RawCodingAuth.Basics.Controllers.Home
         [Authorize]
         public IActionResult Secret()
         {
+            var x = HttpContext.User.Claims.ToList();
             return View();
         }
     }
