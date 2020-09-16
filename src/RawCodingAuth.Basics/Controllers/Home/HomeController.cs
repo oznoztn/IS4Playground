@@ -48,10 +48,10 @@ namespace RawCodingAuth.Basics.Controllers.Home
                 new Claim(ClaimTypes.Email, "ozan@ozten.com"),
 
                 // secret-garden'a özel claim'ler.
-                new Claim("level", "master"),
-                new Claim("xp", "12"),
-                new Claim("mastery", "archery"),
-                new Claim("path", "tao")
+                new Claim("secretGarden:level", "master"),
+                new Claim("secretGarden:xp", "12"),
+                new Claim("secretGarden:mastery", "archery"),
+                new Claim("secretGarden:path", "tao")
             };
 
             // Bu claim'leri baz alarak bir kimlik oluşturuyoruz

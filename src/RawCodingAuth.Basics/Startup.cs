@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RawCodingAuth.Basics.Auth.CustomAuthorizationRequirements;
 
 namespace RawCodingAuth.Basics
 {
@@ -60,11 +61,18 @@ namespace RawCodingAuth.Basics
                             // Bir CLAIM'in daha varlýðýný þart koþuyor:
                             //      Kullanýcýnýn authorized olabilmesi için.
                             .RequireClaim(ClaimTypes.Email, "ozan@ozten.com")
+
+                            // Üstteki RequireClaim'in taklidi olan oluþturduðum custom requirement'ý kullanýyorum
+                            // UserPrincipal.Claims içerisindeki "secretGarden:level" claiminin varlýðýný kontrol ediyor
+                            .AddRequirements(new CustomRequireClaimRequirement("secretGarden:level"))
                         .Build();
 
                 // kendi oluþturduðumuz þeyi set ediyoruz:
                 config.DefaultPolicy = authorizationPolicy;
             });
+
+            // custom handler registeration:
+            services.AddScoped<IAuthorizationHandler, CustomRequireClaimRequirementHandler>();
 
             services.AddControllersWithViews();
         }
