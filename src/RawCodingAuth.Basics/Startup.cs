@@ -65,6 +65,9 @@ namespace RawCodingAuth.Basics
                             // Üstteki RequireClaim'in taklidi olan oluþturduðum custom requirement'ý kullanýyorum
                             // UserPrincipal.Claims içerisindeki "secretGarden:level" claiminin varlýðýný kontrol ediyor
                             .AddRequirements(new CustomRequireClaimRequirement("secretGarden:level"))
+
+                            // Bir diðer custom requirement tanýmlamasý:
+                            .AddRequirements(new RequireExperienceClaim(12))
                         .Build();
 
                 // kendi oluþturduðumuz þeyi set ediyoruz:
@@ -73,6 +76,7 @@ namespace RawCodingAuth.Basics
 
             // custom handler registeration:
             services.AddScoped<IAuthorizationHandler, CustomRequireClaimRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, RequireExperiencePointClaimHandler>();
 
             services.AddControllersWithViews();
         }
