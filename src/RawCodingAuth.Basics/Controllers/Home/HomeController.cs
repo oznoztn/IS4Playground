@@ -113,5 +113,17 @@ namespace RawCodingAuth.Basics.Controllers.Home
         {
             return Content("God mode");
         }
+
+        [Authorize(Policy = "secret-garden")]
+        public IActionResult SecretGardenPolicy()
+        {
+            return Content("Secret Garden Policy");
+        }
+
+        [Authorize(Policy = "admin")]
+        public IActionResult CustomPolicy()
+        {
+            return Content("Custom Policy");
+        }
     }
 }

@@ -28,49 +28,33 @@ namespace RawCodingAuth.Basics
                     config.LoginPath = "/Home/Index";
                 });
 
-            /* AUTHORIZATION POLICY
-             *
-             * Authorization, Authorization Requirement'larýn saðlanmasýyla oluþan bir olgudur.
-             * AuthorizationRequirement'lar AuthorizationHandler sýnýflarý tarafýndan iþlenir edilir.
-             *
-             * Tüm bunlar Authorization Policy kavramýný oluþtururlar.
-             *
-             * .NET TARAFINDAKÝ KARÞILIKLAR
-             * Authorization Requirement => IAuthorizationRequirement
-             * Authorization Handler     => AuthorizationHandler<IAuthorizationRequirement_Implementation>
-             */
-
             services.AddAuthorization(config =>
             {
-                // Açýklamada yazana göre varsayýlan poliçe authenticated user ister, baþka bir þey deðil. 
-                // Varsayýlan poliçeye config.DefaultPolicy prop'u ile eriþebilirsin.
+                config.AddPolicy("admin", configurePolicy =>
+                {
+                    configurePolicy
+                        .RequireAuthenticatedUser()
+                        .RequireClaim(ClaimTypes.Role, "admin");
+                });
 
-                // Biz þimdi default policy'yi kendimiz oluþturup config.DefaultPolicy'ye set edeceðiz.
+                config.AddPolicy("secret-garden", configurePolicy =>
+                {
+                    configurePolicy
+                        .RequireClaim("secretGarden:level")
+                        .RequireClaim("secretGarden:xp")
+                        .RequireClaim("secretGarden:mastery")
+                        .RequireClaim("secretGarden:level")
+                        .RequireClaim("secretGarden:path")
+                        .AddRequirements(new RequireExperienceClaim(12));
+                });
 
+                // DEFAULT POLICY
                 var authorizationPolicyBuilder = new AuthorizationPolicyBuilder();
                 var authorizationPolicy = 
                     authorizationPolicyBuilder
-                            // Ýþte varsayýlan policy'nin gerektirdiði tek þey bu
-                            // Default Policy'yi default policy yapan tek gereksinim.
-                            // Bunu da eklemezsen "en az bir tane auth requirement'ý eklemen gerek" diye hata alýrsýn.
-                        .RequireAuthenticatedUser() 
-                            // Bu Authorization poliçesi belirli bir CLAIM tipini zorunlu kýlýyor
-                            //      Bu arada, "Role" Microsoft'un tanýmladýðý CUSTOM bir CLAIM.
-                            //      Örneðin name, email gibi standart claim'lerden biri deðil.
-                            .RequireClaim(ClaimTypes.Role, "admin")
-                            // Bir CLAIM'in daha varlýðýný þart koþuyor:
-                            //      Kullanýcýnýn authorized olabilmesi için.
-                            .RequireClaim(ClaimTypes.Email, "ozan@ozten.com")
-
-                            // Üstteki RequireClaim'in taklidi olan oluþturduðum custom requirement'ý kullanýyorum
-                            // UserPrincipal.Claims içerisindeki "secretGarden:level" claiminin varlýðýný kontrol ediyor
-                            .AddRequirements(new CustomRequireClaimRequirement("secretGarden:level"))
-
-                            // Bir diðer custom requirement tanýmlamasý:
-                            .AddRequirements(new RequireExperienceClaim(12))
+                        .RequireAuthenticatedUser()
                         .Build();
 
-                // kendi oluþturduðumuz þeyi set ediyoruz:
                 config.DefaultPolicy = authorizationPolicy;
             });
 
@@ -88,13 +72,13 @@ namespace RawCodingAuth.Basics
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseAuthentication();
 
             app.UseRouting();
-            
+
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
