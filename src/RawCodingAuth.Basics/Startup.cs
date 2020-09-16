@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,23 +18,42 @@ namespace RawCodingAuth.Basics
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            // Altta UseAuthorization dedik fakat Authz için hangi scheme'i kullanmasý gerektiðini belirtmedik.
-            // Yani varsayýlan bir AuthenticationScheme tanýmlamasý yapmamýz gerekiyor.
-            // Aksi halde exception: No authenticationScheme was specified, and there was no DefaultChallengeScheme found
             services
                 .AddAuthentication("CookieAuth")
                 .AddCookie("CookieAuth", config =>
                 {
-                    // Authentication iþlemi için bakacaðý cookie'nin ismi:
-                    //      Bu isimde bir cookie bulamazsa authentication iþlemi baþarýsýz addedilecektir.
-                    config.Cookie.Name = "Grandmas.Cookie"; 
-
-                    // Authentication iþlemi baþarýsýz ise kullanýcýnýn LOGIN için yönlendirileceði adres:
+                    config.Cookie.Name = "Grandmas.Cookie";
                     config.LoginPath = "/Home/Index";
                 });
 
+            /* AUTHORIZATION POLICY
+             *
+             * Authorization, Authorization Requirement'larýn saðlanmasýyla oluþan bir olgudur.
+             * AuthorizationRequirement'lar AuthorizationHandler sýnýflarý tarafýndan iþlenir edilir.
+             *
+             * Tüm bunlar Authorization Policy kavramýný oluþtururlar.
+             */
 
-            // MapDefaultControllerRoute() ifadesinin kullanacaðý gerekli servisleri enjeksiyon mekanizmasýna eklemen gerekir.
+            services.AddAuthorization(config =>
+            {
+                // Açýklamada yazana göre varsayýlan poliçe authenticated user ister, baþka bir þey deðil. 
+                // Varsayýlan poliçeye config.DefaultPolicy prop'u ile eriþebilirsin.
+
+                // Biz þimdi default policy'yi kendimiz oluþturup config.DefaultPolicy'ye set edeceðiz.
+
+                var authorizationPolicyBuilder = new AuthorizationPolicyBuilder();
+                var authorizationPolicy = 
+                    authorizationPolicyBuilder
+                            // Ýþte varsayýlan policy'nin gerektirdiði tek þey bu
+                            // Default Policy'yi default policy yapan tek gereksinim.
+                            // Bunu da eklemezsen "en az bir tane auth requirement'ý eklemen gerek" diye hata alýrsýn.
+                        .RequireAuthenticatedUser() 
+                        .Build();
+
+                // kendi oluþturduðumuz þeyi set ediyoruz:
+                config.DefaultPolicy = authorizationPolicy;
+            });
+
             services.AddControllersWithViews();
         }
 
@@ -43,22 +64,15 @@ namespace RawCodingAuth.Basics
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            // Sýralama önemli.
-            // Authorization'dan önce gelmesi gerekir.
-            // Çünkü ilk olarak kullanýcýnýn kim olduðunu bilmemiz gerekir,
-            //    hangi endpoint'leri çaðýrmaya yetkili olup olmadýðýný deðil!
+            
             app.UseAuthentication();
 
             app.UseRouting();
-
-            // Her bir request ile beraber çalýþacak Authorization check iþlemleri için gerekli middleware
-            // [Authorize] attribute'unu kullanmak için de gereklidir.
+            
             app.UseAuthorization();
             
             app.UseEndpoints(endpoints =>
             {
-                // Standart routing: Controller=Home, Action=Index
                 endpoints.MapDefaultControllerRoute();
             });
         }
