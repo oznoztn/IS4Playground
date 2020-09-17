@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace RawCodingAuth.Basics.Auth.CustomAuthorizationRequirements
 {
-    public class RequireExperienceClaim : IAuthorizationRequirement
+    public class ExperiencePointsRequirement : IAuthorizationRequirement
     {
         public int ExperiencePoints { get; }
 
-        public RequireExperienceClaim(int experiencePoints)
+        public ExperiencePointsRequirement(int experiencePoints)
         {
             ExperiencePoints = experiencePoints;
         }
@@ -19,9 +19,9 @@ namespace RawCodingAuth.Basics.Auth.CustomAuthorizationRequirements
     /// <summary>
     /// Eğer secretGarden:xp claim'i varsa, claim değerinin belirtilen değerden büyük olması koşulunu arar
     /// </summary>
-    public class RequireExperiencePointClaimHandler : AuthorizationHandler<RequireExperienceClaim>
+    public class RequireExperiencePointClaimHandler : AuthorizationHandler<ExperiencePointsRequirement>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, RequireExperienceClaim requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ExperiencePointsRequirement requirement)
         {
             const string claimType = "secretGarden:xp";
              

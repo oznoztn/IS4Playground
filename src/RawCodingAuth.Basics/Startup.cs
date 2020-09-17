@@ -45,7 +45,7 @@ namespace RawCodingAuth.Basics
                         .RequireClaim("secretGarden:mastery")
                         .RequireClaim("secretGarden:level")
                         .RequireClaim("secretGarden:path")
-                        .AddRequirements(new RequireExperienceClaim(12));
+                        .AddRequirements(new ExperiencePointsRequirement(12));
                 });
 
                 // DEFAULT POLICY
