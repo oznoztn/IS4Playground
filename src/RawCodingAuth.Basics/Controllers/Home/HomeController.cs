@@ -125,5 +125,57 @@ namespace RawCodingAuth.Basics.Controllers.Home
         {
             return Content("Custom Policy");
         }
+
+        // Episode 4 - IAuthorizationService kullanımı
+
+        public async Task<IActionResult> AuthorizationService(
+            [FromServices]IAuthorizationService authorizationService)
+        {
+            // Poliçe oluşturuyorum. Normalde bu iş Startup içerisinde yapılır.
+            var policyBuilder = new AuthorizationPolicyBuilder();
+            var policy = 
+                policyBuilder
+                    .RequireClaim(ClaimTypes.Role, "admin")
+                    .Build();
+
+            ClaimsPrincipal loggedInUser = HttpContext.User;
+
+            var authzResult = await authorizationService.AuthorizeAsync(loggedInUser, null, policy);
+            if (authzResult.Succeeded)
+            {
+                // kullanıcı admin rolünde, bir şeyler yap.
+                return Content("You are the administrator!");
+            }
+            else
+            {
+                // kullanıcı admin rolünde değil, bir şeyler yap.
+                return Content("You are not the administrator!");
+            }
+        }
+
+        [Authorize]
+        public async Task<IActionResult> AuthorizationService2(
+            [FromServices]IAuthorizationService authorizationService)
+        {
+            // the policy name to check against
+            string policyName = "admin";
+; 
+            var result =
+                await authorizationService
+                    .AuthorizeAsync(HttpContext.User, null, policyName);
+
+            if (result.Succeeded)
+            {
+                // kullanıcı admin rolünde, bir şeyler yap.
+
+                return Content("You are the administrator!");
+            }
+            else
+            {
+                // kullanıcı admin rolünde değil, bir şeyler yap.
+
+                return Content("You are not the administrator!");
+            }
+        }
     }
 }
