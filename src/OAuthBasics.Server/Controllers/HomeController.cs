@@ -39,7 +39,7 @@ namespace OAuthBasics.Server.Controllers
              */
 
             SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Constants.SecretKey));
-            string algorithm = SecurityAlgorithms.Sha256;
+            string algorithm = SecurityAlgorithms.HmacSha256;
 
             SigningCredentials signingCredentials = new SigningCredentials(securityKey, algorithm );
 
@@ -53,11 +53,6 @@ namespace OAuthBasics.Server.Controllers
                     notBefore: DateTime.Now, 
                     expires: DateTime.Now.AddHours(1),
                     signingCredentials: signingCredentials);
-
-            var claimsIdentity = new ClaimsIdentity(claims);
-
-            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
 
             // jwtSecurityToken değişkenini (JwtSecurityToken) öylece serialize edemeyiz,
             // çünkü içerisinde internal malzemeler var.
