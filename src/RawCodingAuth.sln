@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawCodingAuth.Basics", "RawCodingAuth.Basics\RawCodingAuth.Basics.csproj", "{24163861-7582-46D9-885A-8C590A3B45CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCodingAuth.Basics", "RawCodingAuth.Basics\RawCodingAuth.Basics.csproj", "{24163861-7582-46D9-885A-8C590A3B45CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "oauth", "oauth", "{D8555566-54F6-4AA0-A6DF-30DB292D69ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthBasics.Server", "OAuthBasics.Server\OAuthBasics.Server.csproj", "{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{24163861-7582-46D9-885A-8C590A3B45CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24163861-7582-46D9-885A-8C590A3B45CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24163861-7582-46D9-885A-8C590A3B45CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F} = {D8555566-54F6-4AA0-A6DF-30DB292D69ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BB21C7D-D4FF-4CBD-B0CD-BF39110BBB9A}
