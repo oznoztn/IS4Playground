@@ -1,5 +1,23 @@
-﻿<h1>Home</h1>
+﻿@inject Microsoft.AspNetCore.Authorization.IAuthorizationService AuthorizationService
+
+<h1>Home</h1>
 
 <form method="post" action="/home/authenticate">
     <input type="submit" value="Authenticate"/>
 </form>
+
+<h1>Authentication Status</h1>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h2>Authenticated User: @User.Identity.Name</h2>
+    <h2>Is an Admin: @User.IsInRole("admin")</h2>
+}
+else
+{
+    <h2>Not Authenticated</h2>
+}
+
+@* @Basit operasyonlar için User.Identity *@
+
+@* Daha kompleks işlemler için IIAuthorizationService enjekte edilebilir.*@
