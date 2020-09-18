@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCodingAuth.Basics", "Raw
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "oauth", "oauth", "{D8555566-54F6-4AA0-A6DF-30DB292D69ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthBasics.Server", "OAuthBasics.Server\OAuthBasics.Server.csproj", "{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAuthBasics.Server", "OAuthBasics.Server\OAuthBasics.Server.csproj", "{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthBasics.Client", "OAuthBasics.Client\OAuthBasics.Client.csproj", "{D0579B4A-4EE3-4A58-AEC3-0648007A0226}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +25,17 @@ Global
 		{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0579B4A-4EE3-4A58-AEC3-0648007A0226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0579B4A-4EE3-4A58-AEC3-0648007A0226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0579B4A-4EE3-4A58-AEC3-0648007A0226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0579B4A-4EE3-4A58-AEC3-0648007A0226}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8FFFCBA8-B13D-41C4-A5BA-1F8CD95FC21F} = {D8555566-54F6-4AA0-A6DF-30DB292D69ED}
+		{D0579B4A-4EE3-4A58-AEC3-0648007A0226} = {D8555566-54F6-4AA0-A6DF-30DB292D69ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BB21C7D-D4FF-4CBD-B0CD-BF39110BBB9A}
