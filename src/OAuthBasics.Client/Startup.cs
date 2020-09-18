@@ -65,6 +65,19 @@ namespace OAuthBasics.Client
                     // Auth sunucusundan dönen Authorization Kodu'na karþýlýk hangi endpoint'ten TOKEN alacaðýz?
                     //      Tabii ki token issuer olan OAuth sunucusunda bir yere karþýlýk gelecek.
                     oauthOptions.TokenEndpoint = "https://localhost:44324/oauth/token";
+
+
+                    // AUTH SERVER'DA OLUÞTURDUÐUMUZ TOKEN NEREDE?
+                    // Þu an token hiçbir yerde. Kayboldu. 
+                    // Bizim bu örnekteki TOKEN alma amacýmýz sadece onun aracýlýðýyla OAuthBasics.Client.Cookie çerezini alabillmekti.
+                    // Çerezi aldýktan sonra TOKEN ile iþimiz bitiyor. 
+                    // Dolayýsýyla þu an aldýðýmýz token bir yerde tutulmuyor. 
+                    //      Token ile eriþebileceðimiz bir API olsaydý tutabilirdik.
+                    // Token içerisindeki bilgiler iþine yarayacaksa, alýnan token'in client tarafýnda saklanmasý gerektiði belirtilmelidir.
+                    // Bu prop bunu yapýyor.
+
+                    // Auth sunucusundan aldýðýmýz access ve refresh (biz almadýk aslýnda) tokenlerinin saklanmasý:
+                    oauthOptions.SaveTokens = true;
                 });
 
             services.AddControllersWithViews();

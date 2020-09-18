@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,9 @@ namespace OAuthBasics.Client.Controllers
         [Authorize]
         public async Task<IActionResult> Secret()
         {
+            // SET oauthOptions.SaveTokens to TRUE. Otherwise it will be null.
+            string accessToken = await HttpContext.GetTokenAsync("access_token");
+
             return View();
         }
     }
