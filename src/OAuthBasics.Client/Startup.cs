@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace OAuthBasics.Client
 {
@@ -78,6 +82,37 @@ namespace OAuthBasics.Client
 
                     // Auth sunucusundan aldýðýmýz access ve refresh (biz almadýk aslýnda) tokenlerinin saklanmasý:
                     oauthOptions.SaveTokens = true;
+
+                    oauthOptions.Events = new OAuthEvents
+                    {
+                        // Buradaki amacýmýz authentication sunucusundan dönen token'den claim bilgilerini extract etmek
+                        // ve bunlarý ClaimsPrincipal yani authentic user içerisinde tutmak.
+                        //      Bu örnekte access_token ile client app'in (yani burasýnýn) bir baðlantýsý yoktu, UNUTMA!!!
+                        //
+                        // Öyleki artýk application genelinde claim bilgileri eriþilebilir olsun.
+                        //
+                        // Bu da bunlarý cookie'ye yazmak demek oluyor. 
+                        // ClaimsPrincipal için  tanýmladýðýmýz claim'ler cookie'ye yazýlýyordu, ilk dersleri hatýrla.
+                        //
+                        // Alýnan token'den claim bilgileri extract ediliyor ve authentic user'a ekleniyor.
+                        // Bu aþamada henüz cookie yazýlmýþ deðil.
+                        OnCreatingTicket = context =>
+                        {
+                            // 3 parçadan oluþuyordu bir JWT token. 
+                            // metadata | claims, etc. | validation stuff
+                            string infoPartBase64 = context.AccessToken.Split('.')[1];
+                            byte[] infoPartDecoded = Convert.FromBase64String(infoPartBase64);
+                            string infoPart = Encoding.UTF8.GetString(infoPartDecoded);
+
+                            Dictionary<string, string> claimsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(infoPart);
+                            
+                            Claim[] claims = claimsDictionary.Select(t => new Claim(t.Key, t.Value)).ToArray();
+                            
+                            context.Identity.AddClaims(claims);
+
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
 
             services.AddControllersWithViews();

@@ -26,9 +26,6 @@ namespace OAuthBasics.Client.Controllers
         [Authorize]
         public async Task<IActionResult> Secret()
         {
-            // SET oauthOptions.SaveTokens to TRUE. Otherwise it will be null.
-            string accessToken = await HttpContext.GetTokenAsync("access_token");
-
             return View();
         }
     }
