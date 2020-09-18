@@ -1,0 +1,14 @@
+﻿@model OAuthBasics.Server.Controllers.RedirectionInfo
+
+<h1>OAuthBasics.Server Login Page</h1>
+
+<form method="post" action="/oauth/authorize">
+
+    <input type="hidden" name="username" value="ozan" />
+    <input type="hidden" name="password" value="ozten" />
+
+    <input type="hidden" name="state" value="@Model.State" />
+    <input type="hidden" name="redirect_uri" value="@Model.RedirectUri" />
+
+    <input type="submit" value="Authenticate" />
+</form>
