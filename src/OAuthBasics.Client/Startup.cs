@@ -27,8 +27,8 @@ namespace OAuthBasics.Client
 
                     // 3) authorization nasýl yapýlacak
                     //      use this one to check if we are allowed to do something
-                    // Önceki örneklerde bu da  gibi olsaydý, default challenge scheme OAuthBasics.Client.Cookie olurdu.
-                    //      (NOT: Bunu o senaryolarda explicit olarak set etmemiþtik)
+                    // Bu örnek öndeki örneklerdeki gibi olsaydý, default challenge scheme OAuthBasics.Client.Cookie olurdu.
+                    //      (NOT: Bu prop'u o senaryolarda hiç set etmemiþtik)
                     // Burada set ediyoruz çünkü challenge iþlemi için bizim OAuthBasics.Server'a gideceðiz. 
                     //      OAuthBasics.Client.Cookie'yi almak için!
                     // Bu aþamaya geldiðinde artýk .AddOAuth() kýsmýndaki mantýk devreye girecek.

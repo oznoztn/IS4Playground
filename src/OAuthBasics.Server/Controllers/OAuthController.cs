@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace OAuthBasics.Server.Controllers
 {
@@ -56,14 +61,58 @@ namespace OAuthBasics.Server.Controllers
             string redirectUri = $"{redirect_uri}{query}";
 
             return Redirect(redirectUri);
-
-
-            return null;
         }
 
-        public async Task<IActionResult> Token()
+        // https://tools.ietf.org/html/rfc6749#section-4.1.3 access token request (from the client)
+        public async Task<IActionResult> Token(
+            string grant_type, // flow of access_token request
+            string code, // confirmation purposes
+            string redirect_uri,
+            string client_id
+            )
         {
-            return null;
+            // OAuth Kodu'nu burada doğrulamamız gerekir. Biz atladık o işi.
+            //      Issue edilen Auth Kodu'nun 5 dakikalık bir ömrü var(mış)
+
+            var claims = new List<Claim>()
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, "some-id-1"),
+                new Claim(JwtRegisteredClaimNames.Email, "ozan@ozten.com"),
+            };
+
+            SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Constants.SecretKey));
+            string algorithm = SecurityAlgorithms.HmacSha256;
+            SigningCredentials signingCredentials = new SigningCredentials(securityKey, algorithm);
+            
+            JwtSecurityToken jwtSecurityToken =
+                new JwtSecurityToken(
+                    Constants.Issuer,
+                    Constants.Audience,
+                    claims,
+                    notBefore: DateTime.Now,
+                    expires: DateTime.Now.AddHours(1),
+                    signingCredentials: signingCredentials);
+
+            // jwtSecurityToken değişkenini (JwtSecurityToken) öylece serialize edemeyiz,
+            // çünkü içerisinde internal malzemeler var.
+            var tokenJson = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            
+            // https://tools.ietf.org/html/rfc6749#section-4.1.4 access token response
+            var tokenResponseObject = new
+            {
+                access_token = tokenJson,
+                token_type = "Bearer",
+                // expires_in = "", // omitted
+                // refresh_token = "", // omitted
+                my_name = "ozan"
+            };
+
+            string tokenResponseJson = JsonConvert.SerializeObject(tokenResponseObject);
+            var responseBytes = Encoding.UTF8.GetBytes(tokenResponseJson);
+
+            await Response.Body.WriteAsync(responseBytes, 0, responseBytes.Length);
+
+            return Redirect(redirect_uri);
         }
     }
 }
