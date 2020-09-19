@@ -8,6 +8,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+/*
+ *      DECLARATION OF INTENT
+ * Senaryo þu:
+ *
+ * Authorization Server tarafýndan elde ettiðimiz access_token ile
+ * Web API'dan bir 'protected' resource istemek ('authorized' bir enpoint'e istekte bulunmak yani amk)
+ *
+ * Fakat bunu yapmadan önce access_token'i valide etmek (tabii ki en basit haliyle)
+ *
+ * Bunun için authorization server tarafýnda bir endpoint oluþturmak ve bla bla....
+ *
+ */
 namespace OAuthBasics.Api
 {
     public class Startup
