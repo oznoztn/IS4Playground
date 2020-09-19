@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -115,9 +116,14 @@ namespace OAuthBasics.Server.Controllers
             return Redirect(redirect_uri);
         }
 
-        public async Task<IActionResult> Validate(string access_token)
+        public async Task<IActionResult> Validate()
         {
-            if (string.IsNullOrWhiteSpace(access_token))
+            // Süresi geçmemiş valid olan token HttpContext.GetTokenAsync() ile elde edilebilirken
+            //      süresi geçmiş invalid token bu metotla elde edilemiyor.
+            //          Arkaplanda bir şey bunu null olarak set ediyor, bilemedim nedir o şey.
+
+            string accessToken = await HttpContext.GetTokenAsync("access_token");
+            if (string.IsNullOrWhiteSpace(accessToken))
                 return BadRequest();
             else
                 return Ok();
