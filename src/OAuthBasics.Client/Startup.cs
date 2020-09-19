@@ -127,6 +127,9 @@ namespace OAuthBasics.Client
                     };
                 });
 
+            // to satify IHttpClientFactory dependency
+            services.AddHttpClient();
+
             services.AddControllersWithViews();
         }
 

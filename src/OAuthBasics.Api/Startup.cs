@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OAuthBasics.Api.Authorization.Requirements;
 
 /*
  *      DECLARATION OF INTENT
@@ -26,7 +28,27 @@ namespace OAuthBasics.Api
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthorization();
+            services.AddAuthentication();
+
+            services
+                .AddAuthorization(options =>
+                {
+                    AuthorizationPolicyBuilder policyBuilder = 
+                        new AuthorizationPolicyBuilder();
+
+                    policyBuilder.Requirements.Add(new RequireJwtTokenRequirement());
+                    
+                    options.DefaultPolicy = policyBuilder.Build();
+                });
+
+            // add authz requirements
+            services.AddSingleton<IAuthorizationHandler, RequireJwtTokenRequirementHandler>();
+
+            // to satify IHttpClientFactory dependency
+            services.AddHttpClient();
+
+            // to satify IHttpContextAccessor dependency
+            services.AddHttpContextAccessor();
 
             services.AddControllers(); // since its an API
         }
@@ -39,9 +61,7 @@ namespace OAuthBasics.Api
             }
 
             app.UseRouting();
-            
-            // We dont need authentication functionality in this API
-            
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -114,6 +114,14 @@ namespace OAuthBasics.Server.Controllers
 
             return Redirect(redirect_uri);
         }
+
+        public async Task<IActionResult> Validate(string access_token)
+        {
+            if (string.IsNullOrWhiteSpace(access_token))
+                return BadRequest();
+            else
+                return Ok();
+        }
     }
 }
 /*

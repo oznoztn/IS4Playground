@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace OAuthBasics.Api.Controllers
 {
@@ -10,7 +13,13 @@ namespace OAuthBasics.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok("Your secret code is 'DAWN'");
+            return Ok(new
+            {
+                code = "dawn",
+                level = "12",
+                confidential = "true",
+                rank = "supreme"
+            });
         }
     }
 }
