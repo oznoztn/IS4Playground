@@ -47,7 +47,6 @@ namespace OAuthBasics.Api.Authorization.Requirements
              *
              * Bu da o scheme için kayıtlı authentication handler'ının çalışması tetikleyecek.
              */
-            context.Succeed(requirement);
             
             if (_httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authzHeaderValue) == false)
             {
