@@ -23,21 +23,29 @@ namespace OAuthBasics.Client
                 {
                     // 1) authentication için ne kullanacaðýz
                     //      CEVAP: Cookie, more specifically, OAuthBasics.Client.Cookie
+                    //      We check the existence of a cookie called OAuthBasics.Client.Cookie
                     config.DefaultAuthenticateScheme = "OAuthBasics.Client.Cookie";
 
-                    // 2) sign-in olunduðunda ne olacak
+                    // 2) What we are saying is that when we sign-in we will deal with a cookie named ...
                     //      CEVAP: This will also use a cookie, more specifically, the OAuthBasics.Client.Cookie.
                     config.DefaultSignInScheme = "OAuthBasics.Client.Cookie";
 
                     // 3) authorization nasýl yapýlacak
                     //      use this one to check if we are allowed to do something
-                    // Bu örnek öndeki örneklerdeki gibi olsaydý, default challenge scheme OAuthBasics.Client.Cookie olurdu.
-                    //      (NOT: Bu prop'u o senaryolarda hiç set etmemiþtik)
-                    // Burada set ediyoruz çünkü challenge iþlemi için bizim OAuthBasics.Server'a gideceðiz. 
-                    //      OAuthBasics.Client.Cookie'yi almak için!
-                    // Bu aþamaya geldiðinde artýk .AddOAuth() kýsmýndaki mantýk devreye girecek.
-                    // Ve orada oauth server bilgilerini tanýmlayacaðýz
-                    //      Ýsimlerin, OAuthBasics.Server, eþleþtiðine dikkat et!
+                    // Bu örnek öndeki örneklerdeki gibi olsaydý, DefaultChallengeScheme OAuthBasics.Client.Cookie olurdu.
+                    //      ve anonim bir kullanýcý authentication için bir login sayfasýna gönderilirdi
+                    //          bu örnekte bu durum yok.
+                    //
+                    // (NOT: Bu prop'u o senaryolarda hiç set etmemiþtik)
+                    // Burada DefaultChallengeScheme'i set ediyoruz çünkü challenge iþlemi için
+                    //      oluþturduðumuz authentication sunucusuna yani OAuthBasics.Server'a gideceðiz. 
+                    //
+                    // Tüm bunlar OAuthBasics.Client.Cookie'yi almak için yapýlýyor!
+                    //      Authentication iþi authentication sunucusuna aktarýldý (delegation)
+                    //
+                    // Bu aþamaya gelindiðinde .AddOAuth() kýsmýndaki mantýk devreye girecek.
+                    // Dolayýsýyla .AddOAuth() içerisinde authentication server bilgilerini tanýmlayacaðýz
+                    //      Scheme isimlerinin, OAuthBasics.Server, eþleþtiðine dikkat et!
                     config.DefaultChallengeScheme = "OAuthBasics.Server";
                 })
                 .AddCookie("OAuthBasics.Client.Cookie")
