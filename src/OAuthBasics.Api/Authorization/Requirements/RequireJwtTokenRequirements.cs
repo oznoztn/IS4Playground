@@ -40,12 +40,32 @@ namespace OAuthBasics.Api.Authorization.Requirements
             AuthorizationHandlerContext context, 
             RequireJwtTokenRequirement requirement)
         {
-            var authzHeaderValue = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            context.Succeed(requirement);
+            
+            if (_httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authzHeaderValue) == false)
+            {
+                context.Fail();
+                return;
+            }
 
-            var accessToken = authzHeaderValue.ToString().Split(' ')[1] ?? "";
+            if (context.HasSucceeded && string.IsNullOrWhiteSpace(authzHeaderValue))
+            {
+                context.Fail();
+                return;
+            }
+
+            var accessToken = authzHeaderValue.ToString().Split(' ')[1] ?? ""; // "Bearer access_tokens_content"
+
+            if (context.HasSucceeded && string.IsNullOrWhiteSpace(accessToken))
+            {
+                context.Fail();
+                return;
+            }
 
             _httpClient.DefaultRequestHeaders.Authorization = 
                 new AuthenticationHeaderValue("Bearer", accessToken);
+
+            // validate token
             
             var result = await _httpClient
                 .GetAsync($"https://localhost:44324/oauth/validate?access_token={accessToken}");
@@ -53,10 +73,6 @@ namespace OAuthBasics.Api.Authorization.Requirements
             if (result.StatusCode == HttpStatusCode.OK)
             {
                 context.Succeed(requirement);
-            }
-            else
-            {
-                context.Fail();
             }
         }
     }
