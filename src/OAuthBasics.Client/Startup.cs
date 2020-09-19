@@ -91,19 +91,23 @@ namespace OAuthBasics.Client
                     // Auth sunucusundan aldýðýmýz access ve refresh (biz almadýk aslýnda) tokenlerinin saklanmasý:
                     oauthOptions.SaveTokens = true;
 
+
+                    // Bu event'i handle etmemizin nedeni
+                    // authentication sunucusundan dönen token'den claim bilgilerini extract etmek
+                    // ve bunlarý ClaimsPrincipal yani authenticated user içerisinde tutmak.
+                    // Öyleki artýk application genelinde claim bilgileri eriþilebilir olsun.
+                    //
+                    //      Bu örnekte, buraya kadar olan kýsma kadar,
+                    //          bu application daki authentication iþleminin
+                    //              sunucudan alýnan access_token ile bir baðlantýsý yoktu, UNUTMA!!!
+                    //
+                    // Bu da bunlarý bir çereze yazmak demek oluyor. 
+                    // ClaimsPrincipal için  tanýmladýðýmýz claim'ler cookie'ye yazýlýyordu, ilk dersleri hatýrla.
+                    //
+                    // Alýnan token'den claim bilgileri extract ediliyor ve authentic user'a ekleniyor.
+                    // Bu aþamada henüz cookie yazýlmýþ deðil.
                     oauthOptions.Events = new OAuthEvents
                     {
-                        // Buradaki amacýmýz authentication sunucusundan dönen token'den claim bilgilerini extract etmek
-                        // ve bunlarý ClaimsPrincipal yani authentic user içerisinde tutmak.
-                        //      Bu örnekte access_token ile client app'in (yani burasýnýn) bir baðlantýsý yoktu, UNUTMA!!!
-                        //
-                        // Öyleki artýk application genelinde claim bilgileri eriþilebilir olsun.
-                        //
-                        // Bu da bunlarý cookie'ye yazmak demek oluyor. 
-                        // ClaimsPrincipal için  tanýmladýðýmýz claim'ler cookie'ye yazýlýyordu, ilk dersleri hatýrla.
-                        //
-                        // Alýnan token'den claim bilgileri extract ediliyor ve authentic user'a ekleniyor.
-                        // Bu aþamada henüz cookie yazýlmýþ deðil.
                         OnCreatingTicket = context =>
                         {
                             // 3 parçadan oluþuyordu bir JWT token. 
