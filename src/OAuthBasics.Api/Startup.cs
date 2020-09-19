@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OAuthBasics.Api.Authorization;
 using OAuthBasics.Api.Authorization.Requirements;
 
 /*
@@ -28,7 +30,11 @@ namespace OAuthBasics.Api
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication();
+            // using our custom authentication handler
+            //      read the notes in OurCustomAuthenticationHandler.cs file
+            services
+                .AddAuthentication("DefaultAuthScheme")
+                .AddScheme<AuthenticationSchemeOptions, OurCustomAuthenticationHandler>("DefaultAuthScheme", null);
 
             services
                 .AddAuthorization(options =>
@@ -40,6 +46,7 @@ namespace OAuthBasics.Api
                     
                     options.DefaultPolicy = policyBuilder.Build();
                 });
+
 
             // add authz requirements
             services.AddSingleton<IAuthorizationHandler, RequireJwtTokenRequirementHandler>();

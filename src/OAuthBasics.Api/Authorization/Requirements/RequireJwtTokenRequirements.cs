@@ -40,6 +40,13 @@ namespace OAuthBasics.Api.Authorization.Requirements
             AuthorizationHandlerContext context, 
             RequireJwtTokenRequirement requirement)
         {
+            /*
+             * context.Fail()
+             * Authorization işleminin başarısız olduğunu bildiriyor dolayısıyla kullanıcı 'CHALLENGE' edilecek.
+             * Yani kullanıcını authenticate olmaya zorlamış oluyor
+             *
+             * Bu da o scheme için kayıtlı authentication handler'ının çalışması tetikleyecek.
+             */
             context.Succeed(requirement);
             
             if (_httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authzHeaderValue) == false)
@@ -54,7 +61,7 @@ namespace OAuthBasics.Api.Authorization.Requirements
                 return;
             }
 
-            var accessToken = authzHeaderValue.ToString().Split(' ')[1] ?? ""; // "Bearer access_tokens_content"
+            var accessToken  = authzHeaderValue.ToString().Split(' ').Last();
 
             if (context.HasSucceeded && string.IsNullOrWhiteSpace(accessToken))
             {
@@ -73,6 +80,10 @@ namespace OAuthBasics.Api.Authorization.Requirements
             if (result.StatusCode == HttpStatusCode.OK)
             {
                 context.Succeed(requirement);
+            }
+            else
+            {
+                context.Fail();
             }
         }
     }
