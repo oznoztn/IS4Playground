@@ -116,3 +116,21 @@ namespace OAuthBasics.Server.Controllers
         }
     }
 }
+/*
+ *  
+ * If you are using KESTREL
+ * 
+ * Q:
+ * Thanks for your video, when I start using iis, it works fine, but when using kestler, it always thrown an error said: error while copying content to stream. Would you please help?
+ * 
+ * A from RawCoding:
+ * var responseJson = JsonConvert.SerializeObject(responseObject);
+ * var responseBytes = Encoding.UTF8.GetBytes(responseJson);
+ * await Response.Body.WriteAsync(responseBytes, 0, responseBytes.Length);
+ * return  Redirect(redirect_uri);
+ * 
+ * Remove this, and just return responseObjectn
+ * 
+ * You'll have to change the method return type from async Task<Iaction.... to object
+ * 
+ */
