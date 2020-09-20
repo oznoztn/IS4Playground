@@ -27,7 +27,7 @@ namespace OAuthBasics.Server.Controllers
         // User authc için buraya yönlendirildiğiinde OAuthBasics.Client tarafı gönderiyor bunları
         [HttpGet]
         public async Task<IActionResult> Authorize(
-            string response_type, // authorization flow type
+            string response_type, // authentication flow type. determines which one is in use.
             string client_id, 
             string redirect_uri, // url to redirect after successful authentication
             string scope, // what info I want
