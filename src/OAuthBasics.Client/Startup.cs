@@ -32,13 +32,15 @@ namespace OAuthBasics.Client
 
                     // 3) authorization nasýl yapýlacak
                     //      use this one to check if we are allowed to do something
-                    // Bu örnek öndeki örneklerdeki gibi olsaydý, DefaultChallengeScheme OAuthBasics.Client.Cookie olurdu.
+                    // Bu örnek önceki örneklerdeki gibi olsaydý, DefaultChallengeScheme OAuthBasics.Client.Cookie olurdu.
                     //      ve anonim bir kullanýcý authentication için bir login sayfasýna gönderilirdi
                     //          bu örnekte bu durum yok.
                     //
                     // (NOT: Bu prop'u o senaryolarda hiç set etmemiþtik)
-                    // Burada DefaultChallengeScheme'i set ediyoruz çünkü challenge iþlemi için
-                    //      oluþturduðumuz authentication sunucusuna yani OAuthBasics.Server'a gideceðiz. 
+                    //
+                    // Burada DefaultChallengeScheme'i set ediyoruz
+                    //      çünkü challenge iþlemi için
+                    //          oluþturduðumuz authentication sunucusuna yani OAuthBasics.Server'a gideceðiz. 
                     //
                     // Tüm bunlar OAuthBasics.Client.Cookie'yi almak için yapýlýyor!
                     //      Authentication iþi authentication sunucusuna aktarýldý (delegation)
@@ -51,7 +53,8 @@ namespace OAuthBasics.Client
                 .AddCookie("OAuthBasics.Client.Cookie")
                 .AddOAuth("OAuthBasics.Server", oauthOptions =>
                 {
-                    // REQUIREMENTS: CallbackPath, CliendId & ClientSecret, AuthorizationEndpoint, TokenEndpoint
+                    // REQUIREMENTS of OAuth:
+                    // CallbackPath, CliendId & ClientSecret, AuthorizationEndpoint, TokenEndpoint
 
                     oauthOptions.ClientId = "OAuthBasics_Client_Id";
                     oauthOptions.ClientSecret = "OAuthBasics_Client_Secret";
@@ -63,8 +66,8 @@ namespace OAuthBasics.Client
 
                     // 2)
                     // Bu adres middleware'in içerisinde bir yerde.
-                    // Bir blackbox, içeride ne oluyor bilmemize gerek yok.
-                    // Kullanýcý server tarafýndan authenticated olduðunda kullanýcýnýn redired edildiði adres.
+                    // Bir blackbox, içeride ne oluyor bilmiyoruz. Bilmemize de gerek yok.
+                    // Kullanýcý server tarafýndan authenticated olduðunda kullanýcýnýn redirect edildiði adres.
                     // Tek bilmemiz gereken "code" ve "state" bilgisini iþleyen adres burasý
                     //      OAuthBasics.Server > OAuthorizeController.Authorize [POST] redirects here.
                     //      Burasý iþini bitirdikten sonra access token için auth sunucusundaki
@@ -79,18 +82,19 @@ namespace OAuthBasics.Client
                     oauthOptions.TokenEndpoint = "https://localhost:44324/oauth/token";
 
 
-                    // AUTH SERVER'DA OLUÞTURDUÐUMUZ TOKEN NEREDE?
-                    // Þu an token hiçbir yerde. Kayboldu. 
-                    // Bizim bu örnekteki TOKEN alma amacýmýz sadece onun aracýlýðýyla OAuthBasics.Client.Cookie çerezini alabillmekti.
-                    // Çerezi aldýktan sonra TOKEN ile iþimiz bitiyor. 
-                    // Dolayýsýyla þu an aldýðýmýz token bir yerde tutulmuyor. 
-                    //      Token ile eriþebileceðimiz bir API olsaydý tutabilirdik.
-                    // Token içerisindeki bilgiler iþine yarayacaksa, alýnan token'in client tarafýnda saklanmasý gerektiði belirtilmelidir.
-                    // Bu prop bunu yapýyor.
-
                     // Auth sunucusundan aldýðýmýz access ve refresh (biz almadýk aslýnda) tokenlerinin saklanmasý:
                     oauthOptions.SaveTokens = true;
-
+                    
+                    // AUTH SERVER'DA OLUÞTURDUÐUMUZ TOKEN NEREDE?
+                    // Þu an token hiçbir yerde. Kayboldu. 
+                    // Bizim bu örnekteki TOKEN alma amacýmýz
+                    //      onun aracýlýðýyla OAuthBasics.Client.Cookie çerezini alabillmekti SADECE!.
+                    // Çerezi aldýktan sonra TOKEN ile iþimiz bitiyor. 
+                    // Dolayýsýyla þu an aldýðýmýz token bir yerde tutulmuyor.
+                    //      (!) Token ile eriþebileceðimiz bir API olsaydý tutabilirdik.
+                    // Token içerisindeki bilgiler iþine yarayacaksa,
+                    //      alýnan token'in client tarafýnda saklanmasý gerektiði belirtilmelidir.
+                    
 
                     // Bu event'i handle etmemizin nedeni
                     // authentication sunucusundan dönen token'den claim bilgilerini extract etmek
@@ -143,6 +147,7 @@ namespace OAuthBasics.Client
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
