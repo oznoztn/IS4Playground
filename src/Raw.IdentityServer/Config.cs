@@ -1,15 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 
 namespace Raw.IdentityServer
 {
-    public static class Config
+    public static class IdentityServerConfiguration
     {
+        public static IEnumerable<IdentityResource> IdentityResources
+            => new IdentityResource[]
+            {
+                //new IdentityResources.OpenId(),
+                //new IdentityResources.Profile(), 
+                new IdentityResource(
+                    name: "openid",
+                    userClaims: new List<string>() { "sub" }),
+                new IdentityResource(
+                    name: "profile",
+                    userClaims: new[] { "name", "email", "website" })
+            };
+
         public static IEnumerable<ApiResource> ApiResources 
             => new ApiResource[]
         {
@@ -39,11 +49,26 @@ namespace Raw.IdentityServer
                     new Secret("Raw.IdentityServer.Api1.ClientSecret".ToSha256())
                 },
 
-                AllowedScopes = new []
+                AllowedScopes = { "Raw.IdentityServer.Api2" }
+            },
+
+            new Client()
+            {
+                AllowedGrantTypes = GrantTypes.Code,
+                ClientId = "Raw.IdentityServer.Mvc.ClientId",
+                ClientSecrets = 
                 {
-                    "Raw.IdentityServer.Api2"
+                    new Secret("Raw.IdentityServer.Mvc.ClientSecret".ToSha256())
                 },
-            }, 
+                RedirectUris = { "https://localhost:44399/signin-oidc" },
+                PostLogoutRedirectUris = { "https://localhost:44399/signout-callback-oidc" },
+                AllowedScopes =
+                {
+                    IdentityServerConstants.StandardScopes.OpenId, // "openid", 
+                    IdentityServerConstants.StandardScopes.Profile, // "profile", 
+                    "Raw.IdentityServer.Api2"
+                }
+            }
         };
     }
 }

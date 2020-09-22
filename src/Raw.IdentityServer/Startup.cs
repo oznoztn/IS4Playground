@@ -19,9 +19,10 @@ namespace Raw.IdentityServer
             IIdentityServerBuilder builder = services.AddIdentityServer();
 
             builder
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryApiResources(Config.ApiResources) // register ApiScopes first
-                .AddInMemoryClients(Config.GetClients);
+                .AddInMemoryIdentityResources(IdentityServerConfiguration.IdentityResources)
+                .AddInMemoryApiScopes(IdentityServerConfiguration.ApiScopes)
+                .AddInMemoryApiResources(IdentityServerConfiguration.ApiResources) // register ApiScopes first
+                .AddInMemoryClients(IdentityServerConfiguration.GetClients);
 
             builder.AddDeveloperSigningCredential();
 

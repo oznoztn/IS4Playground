@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raw.IdentityServer.Api2", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raw.IdentityServer", "Raw.IdentityServer\Raw.IdentityServer.csproj", "{ECFF982E-FFF4-4A08-8ED5-7D395361FDD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raw.IdentityServer.Mvc", "Raw.IdentityServer.Mvc\Raw.IdentityServer.Mvc.csproj", "{075985CE-0743-4443-88CA-DCEE8CC87230}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{ECFF982E-FFF4-4A08-8ED5-7D395361FDD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECFF982E-FFF4-4A08-8ED5-7D395361FDD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECFF982E-FFF4-4A08-8ED5-7D395361FDD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{075985CE-0743-4443-88CA-DCEE8CC87230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{075985CE-0743-4443-88CA-DCEE8CC87230}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{075985CE-0743-4443-88CA-DCEE8CC87230}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{075985CE-0743-4443-88CA-DCEE8CC87230}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{DBB10D47-8B61-41CC-90CA-E6044E8EE93C} = {4395DF57-1BE0-43AC-96C5-3AAD2354595F}
 		{EDC91B6D-8F01-4107-A190-043527D0D5DC} = {4395DF57-1BE0-43AC-96C5-3AAD2354595F}
 		{ECFF982E-FFF4-4A08-8ED5-7D395361FDD8} = {4395DF57-1BE0-43AC-96C5-3AAD2354595F}
+		{075985CE-0743-4443-88CA-DCEE8CC87230} = {4395DF57-1BE0-43AC-96C5-3AAD2354595F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BB21C7D-D4FF-4CBD-B0CD-BF39110BBB9A}
