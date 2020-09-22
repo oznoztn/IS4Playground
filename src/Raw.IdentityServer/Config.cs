@@ -10,10 +10,20 @@ namespace Raw.IdentityServer
 {
     public static class Config
     {
+        public static IEnumerable<ApiResource> ApiResources 
+            => new ApiResource[]
+        {
+            // "The value(s) of the audience claim will be the name of the API resource."
+            new ApiResource(name: "Raw.IdentityServer.Api2")
+            {
+                Scopes = new [] { "Raw.IdentityServer.Api2" }
+            }, 
+        };
+
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-                new ApiScope("Raw.IdentityServer.Api2"),
+                new ApiScope("Raw.IdentityServer.Api2")
             };
 
         public static IEnumerable<Client> GetClients => new Client[]
@@ -37,3 +47,12 @@ namespace Raw.IdentityServer
         };
     }
 }
+
+/*
+ *          On ApiResource & ApiScope
+ *
+ * To migrate to v4 you need to split up scope and resource registration,
+ * typically by first registering all your scopes (e.g. using the AddInMemoryApiScopes method),
+ * and then register the API 1resources (if any) afterwards.
+ * The API resources will then reference the prior registered scopes by name.
+ */

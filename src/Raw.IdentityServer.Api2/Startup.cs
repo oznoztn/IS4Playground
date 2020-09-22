@@ -17,10 +17,13 @@ namespace Raw.IdentityServer.Api2
                     config.Authority = "https://localhost:44348";
                     config.Audience = "Raw.IdentityServer.Api2";
 
-                    // Þimdilik Audience validasyonunu kapatalým
+                    // Artýk access_token'daki 'aud' claim deðerini de valide ediyoruz.
+                    // Böylece gelen token'in bu API için oluþturulmuþ olduðunu doðrulamýþ oluyoruz.
+
+                    // Gereksiz aslýnda --üstte set ettiðimizden. Yine de silmedim.
                     config.TokenValidationParameters = new TokenValidationParameters()
                     {
-                        ValidateAudience = false
+                        ValidateAudience = true
                     };
                 });
 

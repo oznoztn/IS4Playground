@@ -20,6 +20,7 @@ namespace Raw.IdentityServer
 
             builder
                 .AddInMemoryApiScopes(Config.ApiScopes)
+                .AddInMemoryApiResources(Config.ApiResources) // register ApiScopes first
                 .AddInMemoryClients(Config.GetClients);
 
             builder.AddDeveloperSigningCredential();
