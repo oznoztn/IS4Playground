@@ -20,7 +20,7 @@
     "Raw.IdentityServer.Api2": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "secret",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

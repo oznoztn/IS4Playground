@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace Raw.IdentityServer
 {
@@ -14,6 +15,18 @@ namespace Raw.IdentityServer
     { 
         public void ConfigureServices(IServiceCollection services)
         {
+            // he says AddIdentityServer instruction adds authentication and authorizations services
+            IIdentityServerBuilder builder = services.AddIdentityServer();
+
+            builder
+                .AddInMemoryApiScopes(Config.ApiScopes)
+                .AddInMemoryClients(Config.GetClients);
+
+            builder.AddDeveloperSigningCredential();
+
+            // not recommended for production - you need to store your key material somewhere secure
+            builder.AddDeveloperSigningCredential();
+
             services.AddControllersWithViews();
         }
 
@@ -25,7 +38,10 @@ namespace Raw.IdentityServer
             }
 
             app.UseHttpsRedirection();
+
             app.UseRouting();
+
+            app.UseIdentityServer();
 
             app.UseEndpoints(endpoints =>
             {

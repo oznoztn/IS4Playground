@@ -17,11 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "is", "is", "{4395DF57-1BE0-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "basics", "basics", "{DBB58F64-2B07-4A29-B0CB-AA4F0B4913C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raw.IdentityServer.Api1", "Raw.IdentityServer.Api1\Raw.IdentityServer.Api1.csproj", "{DBB10D47-8B61-41CC-90CA-E6044E8EE93C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raw.IdentityServer.Api1", "Raw.IdentityServer.Api1\Raw.IdentityServer.Api1.csproj", "{DBB10D47-8B61-41CC-90CA-E6044E8EE93C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raw.IdentityServer.Api2", "Raw.IdentityServer.Api2\Raw.IdentityServer.Api2.csproj", "{EDC91B6D-8F01-4107-A190-043527D0D5DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raw.IdentityServer.Api2", "Raw.IdentityServer.Api2\Raw.IdentityServer.Api2.csproj", "{EDC91B6D-8F01-4107-A190-043527D0D5DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raw.IdentityServer", "Raw.IdentityServer\Raw.IdentityServer.csproj", "{ECFF982E-FFF4-4A08-8ED5-7D395361FDD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raw.IdentityServer", "Raw.IdentityServer\Raw.IdentityServer.csproj", "{ECFF982E-FFF4-4A08-8ED5-7D395361FDD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

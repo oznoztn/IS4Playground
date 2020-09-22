@@ -4,17 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Raw.IdentityServer.Api2.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class SecretController : ControllerBase
     {
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [Authorize]
+        [HttpGet("/secret")]
+        public async Task<string> Get()
         {
-            return Ok(new
-            {
-                message = "Secret Message from Api2"
-            });
+            return "secret Message from Api2";
         }
     }
 }
