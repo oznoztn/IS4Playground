@@ -34,8 +34,6 @@ namespace OAuthBasics.Server.Controllers
             /*
              * Standartlara göre JWT jetonunu şifrelemenin iki yolu vardı:
              * Bunlardan birisi sertifika kullanmak diğeri ise secret key. Dokümantasyonu hatırla.
-             *
-             * Bu gerçek kendisini SigningCredentials sınıfının ctor'unda tezahür ettiriyor.
              */
 
             SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Constants.SecretKey));

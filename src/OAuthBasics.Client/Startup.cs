@@ -26,7 +26,7 @@ namespace OAuthBasics.Client
                     //      We check the existence of a cookie called OAuthBasics.Client.Cookie
                     config.DefaultAuthenticateScheme = "OAuthBasics.Client.Cookie";
 
-                    // 2) What we are saying is that when we sign-in we will deal with a cookie named ...
+                    // 2) What we are saying is that when we sign-in we will deal with a cookie named ... [TODO: clarification needed]
                     //      CEVAP: This will also use a cookie, more specifically, the OAuthBasics.Client.Cookie.
                     config.DefaultSignInScheme = "OAuthBasics.Client.Cookie";
 
@@ -60,7 +60,7 @@ namespace OAuthBasics.Client
                     oauthOptions.ClientSecret = "OAuthBasics_Client_Secret";
 
                     // 1)
-                    // Burasý sanýrým bize Authorization Code'u verecek endpoint.
+                    // AuthorizationEndpoint bize Authorization Code'u verecek endpoint.
                     //      Eðer öyleyse tabii ki Auth sunucusunda bulunan bir yer olacak:
                     oauthOptions.AuthorizationEndpoint = "https://localhost:44324/oauth/authorize";
 
@@ -81,7 +81,6 @@ namespace OAuthBasics.Client
                     //      Tabii ki token issuer olan OAuth sunucusunda bir yere karþýlýk gelecek.
                     oauthOptions.TokenEndpoint = "https://localhost:44324/oauth/token";
 
-
                     // Auth sunucusundan aldýðýmýz access ve refresh (biz almadýk aslýnda) tokenlerinin saklanmasý:
                     oauthOptions.SaveTokens = true;
                     
@@ -90,11 +89,8 @@ namespace OAuthBasics.Client
                     // Bizim bu örnekteki TOKEN alma amacýmýz
                     //      onun aracýlýðýyla OAuthBasics.Client.Cookie çerezini alabillmekti SADECE!.
                     // Çerezi aldýktan sonra TOKEN ile iþimiz bitiyor. 
-                    // Dolayýsýyla þu an aldýðýmýz token bir yerde tutulmuyor.
-                    //      (!) Token ile eriþebileceðimiz bir API olsaydý tutabilirdik.
-                    // Token içerisindeki bilgiler iþine yarayacaksa,
+                    // Token içerisindeki bilgiler iþine yarayacaksa, örnðin API call yapacaksan,
                     //      alýnan token'in client tarafýnda saklanmasý gerektiði belirtilmelidir.
-                    
 
                     // Bu event'i handle etmemizin nedeni
                     // authentication sunucusundan dönen token'den claim bilgilerini extract etmek
@@ -120,9 +116,13 @@ namespace OAuthBasics.Client
                             byte[] infoPartDecoded = Convert.FromBase64String(infoPartBase64);
                             string infoPart = Encoding.UTF8.GetString(infoPartDecoded);
 
-                            Dictionary<string, string> claimsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(infoPart);
+                            Dictionary<string, string> claimsDictionary = 
+                                JsonConvert.DeserializeObject<Dictionary<string, string>>(infoPart);
                             
-                            Claim[] claims = claimsDictionary.Select(t => new Claim(t.Key, t.Value)).ToArray();
+                            Claim[] claims = 
+                                claimsDictionary
+                                    .Select(t => new Claim(t.Key, t.Value))
+                                    .ToArray();
                             
                             context.Identity.AddClaims(claims);
 
@@ -131,9 +131,7 @@ namespace OAuthBasics.Client
                     };
                 });
 
-            // to satify IHttpClientFactory dependency
             services.AddHttpClient();
-
             services.AddControllersWithViews();
         }
 

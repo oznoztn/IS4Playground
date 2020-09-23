@@ -23,8 +23,7 @@ namespace RawCodingAuth.Basics.Auth.CustomAuthorizationRequirements
     {
         public CustomRequireClaimRequirementHandler()
         {
-            // Olay da bu zaten.
-            // Herhangi bir servisi enjekte edebilir, burada kullanabiliriz.    
+
         }
 
         protected override Task HandleRequirementAsync(
@@ -33,8 +32,6 @@ namespace RawCodingAuth.Basics.Auth.CustomAuthorizationRequirements
         {
             if (context.User.HasClaim(t => t.Type == requirement.Claim))
             {
-                // demek ki claim var, o zaman OK
-
                 context.Succeed(requirement);
             }
 

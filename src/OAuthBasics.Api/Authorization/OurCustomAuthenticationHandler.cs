@@ -30,7 +30,7 @@ namespace OAuthBasics.Api.Authorization
      * 401 döndürmek dışında hiçbir şey yapmayan.
      *
      * Authentication servisi CHALLENGED olmazsan tetiklenmez.
-     * Peki ne zaman 'CHALLENGED' olursun? İstek 401 Döndüğünde.
+     * Peki ne zaman 'CHALLENGED' olursun? İstek 401 Döndüğünde. [TODO: clarification required]
      *
      * Whenever we fail the authorization, we are going to be challenged.
      * Whenever we are going to be challenged, this custom authentication handler will be triggered.

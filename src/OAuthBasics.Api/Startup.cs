@@ -51,13 +51,10 @@ namespace OAuthBasics.Api
             // add authz requirements
             services.AddSingleton<IAuthorizationHandler, RequireJwtTokenRequirementHandler>();
 
-            // to satify IHttpClientFactory dependency
             services.AddHttpClient();
-
-            // to satify IHttpContextAccessor dependency
             services.AddHttpContextAccessor();
 
-            services.AddControllers(); // since its an API
+            services.AddControllers(); // Controller only, since its an API.
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
