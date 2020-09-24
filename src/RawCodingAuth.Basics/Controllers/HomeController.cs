@@ -38,7 +38,7 @@ namespace RawCodingAuth.Basics.Controllers
             List<Claim> secretGardenClaims = new List<Claim>()
             {
                 // Bu alttaki bir claim'in ortak olmasına dikkat et.
-                // Demek ki her iki yerle aynı e-mail adresi ile bir bağlantım var.
+                // Demek ki her iki yerle aynı e-mail adresiyle bir bağlantım var.
                 new Claim(ClaimTypes.Name, "Ozan ZzZz"),
                 new Claim(ClaimTypes.Email, "ozan@ozten.com"),
 
@@ -65,31 +65,30 @@ namespace RawCodingAuth.Basics.Controllers
                 rolesIdentity
             });
 
-            // Kullanıcı sisteme sokuyoruz (LOGIN).
-            // Arkaplanda client tarayıcısına Grandmas.Cookie isimli çerezi yazdırıyor.
+            // Kullanıcıyı sisteme sokuyoruz.
+            // Kullanıcının tarayıcısına RawCodingAuth.Basics.Cookie isimli çerezi yazdırıyoruz.
             HttpContext.SignInAsync(userPrincipal);
 
             return RedirectToAction("Secret");
 
             /*
              * 1)
-             * Claim soyut bir kavramdır. .NET ile alakası değildir. Bir standarttır.
+             * Claim soyut bir kavramdır. .NET ile alakalı değildir. Bir standarttır.
              *
              * 2)
-             * Claim kullanıcı hakkındaki bilgileri tutan key/val ikililerinde oluşan bir veri yapısıdır.
+             * Claim kullanıcı hakkındaki bilgileri tutan key/val ikililerinden oluşan bir veri yapısıdır.
              *
              * 3)
              * Birden fazla otorite senin kim olduğuna dair bilgi sağlayabilir.
-             * Örneğin; Grandman, Google, Facebook, E-Devlet, vs.
-             * Yukarda iki tane otorite var: Grandma ve SecretGarden
+             * Örneğin; Grandma, Google, Facebook, E-Devlet, vs.
              *
              * 4)
-             * Identity framework kullanıcıya bağlı CLAIM'leri veritabanında tutar ve
-             * kullanıcı (identity'deki) ilgili manager sınıfıyla çekildiğinde
-             * zaten otomatik olarak kullanıcıya SET eder.
+             * Identity framework kullanıcıya bağlı CLAIM'leri veritabanında tutar
+             * ve kullanıcı (Identity ile gelen) ilgili manager sınıfıyla çekildiğinde
+             * otomatik olarak bunları kullanıcıya SET eder.
              *
-             * Buradaki implementasyon bir nevi low-level implementasyon.
-             * Yine de neyin nasıl set edildiğini bilmekte fayda var.
+             * Buradaki detaylar low-level implementasyon detayları aslında.
+             * Yine de neyin nasıl işlediğini bilmekte fayda var.
              *
              * */
         }

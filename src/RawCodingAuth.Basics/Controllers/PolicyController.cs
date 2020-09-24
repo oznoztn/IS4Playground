@@ -11,8 +11,8 @@ namespace RawCodingAuth.Basics.Controllers
     public class PolicyController : Controller
     {
         // User.Claims.Any(t => t.Type == ClaimTypes.Role) == true
-        //   olan ClaimsPrinciap için...
-        //   Kısacası kullanıcının 'role' claimine bakıyor, belirtilen rol var mı yok mu diye.
+        //      olan ClaimsPrincipal buraya erişebilir.
+        //  Kullanıcının 'role' claimine bakıyor, belirtilen rol var mı yok mu diye.
         [Authorize(Roles = "god-mode")]
         public IActionResult GodMode()
         {

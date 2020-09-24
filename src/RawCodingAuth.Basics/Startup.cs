@@ -22,7 +22,7 @@ namespace RawCodingAuth.Basics
                 .AddAuthentication("CookieAuth")
                 .AddCookie("CookieAuth", config =>
                 {
-                    config.Cookie.Name = "Grandmas.Cookie";
+                    config.Cookie.Name = "RawCodingAuth.Basics.Cookie";
                     config.LoginPath = "/Home/Index";
                 });
 
