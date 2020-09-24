@@ -1,0 +1,12 @@
+﻿@model Raw.IdentityServer.Models.LoginViewModel
+
+<h1>Identity Server Login</h1>
+
+<form asp-controller="Auth" asp-action="Login" method="POST">
+    <input type="hidden" asp-for="ReturnUrl"/>
+
+    <input type="text" asp-for="Username" value="username" placeholder="username"/>
+    <input type="text" asp-for="Password" value="password" placeholder="password"/>
+
+    <input type="submit" value="Login"/>
+</form>

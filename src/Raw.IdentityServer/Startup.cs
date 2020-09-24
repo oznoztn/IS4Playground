@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
+using Raw.IdentityServer.Data;
 
 namespace Raw.IdentityServer
 {
@@ -15,19 +18,43 @@ namespace Raw.IdentityServer
     { 
         public void ConfigureServices(IServiceCollection services)
         {
-            // he says AddIdentityServer instruction adds authentication and authorizations services
-            IIdentityServerBuilder builder = services.AddIdentityServer();
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseInMemoryDatabase("memdb");
+            });
 
-            builder
+            IdentityBuilder identityBuilder = services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 3;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+            });
+
+            identityBuilder
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "Raw.IdentityServer.Cookie";
+                options.LoginPath = "/auth/login";
+            });
+
+            // He says AddIdentityServer instruction adds authentication and authorizations services
+            IIdentityServerBuilder identityServerBuilder =
+                services.AddIdentityServer();
+
+            identityServerBuilder
+                .AddAspNetIdentity<IdentityUser>() // Solves "InvalidOperationException: sub claim is missing"
                 .AddInMemoryIdentityResources(IdentityServerConfiguration.IdentityResources)
                 .AddInMemoryApiScopes(IdentityServerConfiguration.ApiScopes)
                 .AddInMemoryApiResources(IdentityServerConfiguration.ApiResources) // register ApiScopes first
                 .AddInMemoryClients(IdentityServerConfiguration.GetClients);
 
-            builder.AddDeveloperSigningCredential();
-
             // not recommended for production - you need to store your key material somewhere secure
-            builder.AddDeveloperSigningCredential();
+            identityServerBuilder.AddDeveloperSigningCredential();
 
             services.AddControllersWithViews();
         }
