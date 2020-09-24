@@ -26,12 +26,28 @@ namespace RawCodingAuth.Basics
                     config.LoginPath = "/Home/Index";
                 });
 
+            /* AUTHORIZATION POLICY
+             *
+             * Authorization, bir veya birden fazla Authorization Requirement'ýn saðlanmasýyla oluþan bir olgudur.
+             * AuthorizationRequirement'lar AuthorizationHandler sýnýflarý tarafýndan iþlenir.
+             * 
+             * Tüm bunlar Authorization Policy kavramýný oluþtururlar.
+             *
+             * .NET TARAFINDAKÝ KARÞILIKLAR
+             * Authorization Requirement => An implementation of IAuthorizationRequirement interface
+             * Authorization Handler     => AuthorizationHandler of that IAuthorizationRequirement implementation
+             */
+
             services.AddAuthorization(config =>
             {
                 config.AddPolicy("admin", configurePolicy =>
                 {
                     configurePolicy
                         .RequireAuthenticatedUser()
+                        // Bu Authorization poliçesi belirli bir CLAIM tipini zorunlu kýlýyor
+                        //      Bu arada, "Role" Microsoft'un tanýmladýðý CUSTOM bir CLAIM.
+                        //          Claim'in namespace'inden de görebilirsin.
+                        //      Örneðin name, email gibi standart claim'lerden biri deðil.
                         .RequireClaim(ClaimTypes.Role, "admin");
                 });
 
@@ -42,14 +58,25 @@ namespace RawCodingAuth.Basics
                         .RequireClaim("secretGarden:xp")
                         .RequireClaim("secretGarden:mastery")
                         .RequireClaim("secretGarden:level")
-                        .RequireClaim("secretGarden:path")
+                        // (Üstteki) RequireClaim taklidi olan custom Requirement'i kullanýyorum.
+                        // UserPrincipal.Claims içerisindeki "secretGarden:path" claiminin varlýðýný kontrol ediyor
+                        .AddRequirements(new CustomRequireClaimRequirement("secretGarden:path"))
+                        // Bir diðer custom requirement tanýmlamasý:
                         .AddRequirements(new ExperiencePointsRequirement(12));
                 });
 
                 // DEFAULT POLICY
+                // Açýklamada yazana göre varsayýlan poliçe authenticated user ister, baþka bir þey deðil. 
+                // Varsayýlan poliçeye config.DefaultPolicy prop'u ile eriþebilirsin.
+
+                // Biz þimdi default policy'yi kendimiz oluþturup config.DefaultPolicy'ye set edeceðiz.
+
                 var authorizationPolicyBuilder = new AuthorizationPolicyBuilder();
                 var authorizationPolicy = 
                     authorizationPolicyBuilder
+                        // Ýþte varsayýlan policy'nin gerektirdiði tek þey bu
+                        // Default Policy'yi default policy yapan tek Requirement.
+                        // Bunu da eklemezsen "en az bir tane auth requirement'ý eklemen gerek" diye hata alýrsýn.
                         .RequireAuthenticatedUser()
                         .Build();
 
