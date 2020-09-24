@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Raw.IdentityServer.Constants;
 
 namespace Raw.IdentityServer.Mvc
 {
@@ -28,10 +29,10 @@ namespace Raw.IdentityServer.Mvc
                 })
                 .AddOpenIdConnect("oidc", config =>
                 {
-                    config.Authority = "https://localhost:44348";
+                    config.Authority = RawApplicationUrl.IdentityServer;
 
-                    config.ClientId = "Raw.IdentityServer.Mvc.ClientId";
-                    config.ClientSecret = "Raw.IdentityServer.Mvc.ClientSecret";
+                    config.ClientId = RawClientId.Mvc;
+                    config.ClientSecret = RawClientSecret.Mvc;
 
                     config.ResponseType = "code";
 

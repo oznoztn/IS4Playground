@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Raw.IdentityServer.Constants;
 
 namespace Raw.IdentityServer.Api1.Controllers
 {
@@ -25,15 +26,15 @@ namespace Raw.IdentityServer.Api1.Controllers
             //retrieve access token
             var serverClient = _httpClientFactory.CreateClient();
 
-            var discoveryDocument = await serverClient.GetDiscoveryDocumentAsync("https://localhost:44348/");
+            var discoveryDocument = await serverClient.GetDiscoveryDocumentAsync(RawApplicationUrl.IdentityServer);
 
             var tokenResponse = await serverClient.RequestClientCredentialsTokenAsync(
                 new ClientCredentialsTokenRequest
                 {
                     Address = discoveryDocument.TokenEndpoint,
 
-                    ClientId = "Raw.IdentityServer.Api1.ClientId",
-                    ClientSecret = "Raw.IdentityServer.Api1.ClientSecret",
+                    ClientId = RawClientId.Api1,
+                    ClientSecret = RawClientSecret.Api1,
 
                     Scope = "Raw.IdentityServer.Api2",
                 });
@@ -42,7 +43,7 @@ namespace Raw.IdentityServer.Api1.Controllers
             var apiClient = _httpClientFactory.CreateClient();
             apiClient.SetBearerToken(tokenResponse.AccessToken);
 
-            var response = await apiClient.GetAsync("https://localhost:44372/secret");
+            var response = await apiClient.GetAsync($"{RawApplicationUrl.Api2}secret");
             var content = await response.Content.ReadAsStringAsync();
 
             return Ok(new

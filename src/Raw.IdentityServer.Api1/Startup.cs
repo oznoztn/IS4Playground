@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Raw.IdentityServer.Constants;
 
 namespace Raw.IdentityServer.Api1
 {
@@ -19,8 +20,8 @@ namespace Raw.IdentityServer.Api1
                 .AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", config =>
                 {
-                    config.Authority = "https://localhost:44372";
-                    config.Audience = "Raw.IdentityServer.Api1";
+                    config.Authority = RawApplicationUrl.Api2;
+                    config.Audience = RawClientName.Api1;
                 });
 
             services.AddHttpClient();

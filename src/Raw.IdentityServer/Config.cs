@@ -2,6 +2,7 @@
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
+using Raw.IdentityServer.Constants;
 
 namespace Raw.IdentityServer
 {
@@ -43,10 +44,10 @@ namespace Raw.IdentityServer
                 // Client Credentials flow type is suitable for machine to machine communication
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 
-                ClientId = "Raw.IdentityServer.Api1.ClientId",
+                ClientId = RawClientId.Api1,
                 ClientSecrets = new Secret[]
                 {
-                    new Secret("Raw.IdentityServer.Api1.ClientSecret".ToSha256())
+                    new Secret(RawClientSecret.Api1.ToSha256())
                 },
 
                 AllowedScopes = { "Raw.IdentityServer.Api2" }
@@ -55,10 +56,10 @@ namespace Raw.IdentityServer
             new Client()
             {
                 AllowedGrantTypes = GrantTypes.Code,
-                ClientId = "Raw.IdentityServer.Mvc.ClientId",
+                ClientId = RawClientId.Mvc,
                 ClientSecrets = 
                 {
-                    new Secret("Raw.IdentityServer.Mvc.ClientSecret".ToSha256())
+                    new Secret(RawClientSecret.Mvc.ToSha256())
                 },
                 RedirectUris = { "https://localhost:44399/signin-oidc" },
                 PostLogoutRedirectUris = { "https://localhost:44399/signout-callback-oidc" },
