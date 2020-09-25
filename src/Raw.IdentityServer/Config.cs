@@ -30,7 +30,6 @@ namespace Raw.IdentityServer
             };
 
         // ApiScope/ApiResource olarak tanımlanan bilgiler access_token içerisinde tutulur.
-
         // "The value(s) of the audience claim will be the name of the API resource."
         public static IEnumerable<ApiResource> ApiResources 
             => new ApiResource[]
@@ -90,13 +89,12 @@ namespace Raw.IdentityServer
                     "area51"
                 },
 
-                // İstenen scope ile ilgili bilgiler (Claim'ler) id_token içerisinde tutulur.
-                // Normalde kullanıcı claim'leri arkaplada userinfo enpoint'ine istek atılarak elde edilir.
-                // Avantajı iki ayrı noktaya request atmak yerine (network latency) te noktadan bütün bilgileri alabilmek.
+                // True olduğunda IdentityResource olarak tanımlanan claim'ler (user claims) de id_token içerisinde tutulur.
+                // Normalde kullanıcı claim'leri için arkaplada userinfo enpoint'ine fazladan bir istek daha atılır.
+                // Avantajı tek bir request ile bütün bilgileri alabilmek.
                 // Dezavantajı id_token'ın şişmesi.
-                
-                // Varsayılan olarak false.
-                //AlwaysIncludeUserClaimsInIdToken = false
+
+                AlwaysIncludeUserClaimsInIdToken = true
             }
         };
     }
@@ -114,4 +112,36 @@ namespace Raw.IdentityServer
  * Dolayısıyla bu scope için IS tarafında tanımlama yapmayı
  * ve Client'a scope için erişim izni vermeyi unutma (Client.AllowedScopes)
  *
+ *          
+ *   
+ * M isminde bir IdentityResource tanımlamak,
+ * IdentityServer'a kullanılmaya müsait (available) bir M scope'u olduğunu bildirir.
+ *
+ * Bir Client'in o scope'a ulaşabilmesi için
+ * Client.AllowedScopes koleksiyonuna M scope'u eklenmelidir.
+ * Bu Client'in onu isteyebileceği anlamına gelir, istediği anlamına gelmez.
+ *
+ * Yani M scope bilgilerini istemek için Client'i temsil eden web app veya web api yazılım
+ * tarafında bu istek belirtilmelidir (config.Scopes.Add("scope_ismi"); )
+ *
+ *
+ *
+ * id_token	    => Kullanıcının authentication bilgilerini tutar (AUTHZ)
+ * access_token	=> Kullanıcının yetki bilgilerini tutar (AUTHC)
+ *
+ * id_token ve access_token çerez içerisinde tutuluyor
+ *
+ * Senin kimlik bilgilerini tutan çerez IdentityServer'in yazdığı çerez.
+ * Diğerleri authentication söz konusu olduğunda hava cıva.
+ * Diğerlerini silsen dahi, tekrar protected resource'a gitmek istediğinde,
+ * IdentityServer çerezindeki bilgilerle, tabii server tarafında o anda authenticated durumdaysan,
+ * diğer çerezler tekrar oluşturulur ve sana verilir.
+ *
+ * id_token içerisindeki claim'ler (ama hepsi değil) .NET tarafında deserialize edilip
+ * .NET tarafındaki ClaimsPrincipal.Claims koleksiyonuna atılıyır.
+ *
+ *
+ *
+ * Bir claim'in id_token içerisinde bulunmasını istiyorsa IdentityResource olarak;
+ * access_token içerisinde bulunmasını istiyorsan ApiResource/ApiScope olarak tanımla.
  */

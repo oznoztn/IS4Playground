@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +19,7 @@ namespace Raw.IdentityServer.Mvc.Controllers
             JwtSecurityToken accessToken = new JwtSecurityTokenHandler().ReadJwtToken(access_token);
             JwtSecurityToken idToken = new JwtSecurityTokenHandler().ReadJwtToken(id_token);
 
+            var x = this.User.Claims.ToList();
             return View(new SecretViewModel()
             {
                 AccessToken = accessToken,
