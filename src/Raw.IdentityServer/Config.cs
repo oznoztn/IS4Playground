@@ -8,6 +8,11 @@ namespace Raw.IdentityServer
 {
     public static class IdentityServerConfiguration
     {
+        // An identity resource is a named group of claims that can be requested using the scope parameter.
+
+        // IdentityResource olarak tanımlanan bilgiler (scope ve claim'leri) id_token içerisinde tutulur.
+        //      Fakat varsayılan olarak bu claim'ler id_token içerisine direk yazılmazlar
+        //          AlwaysIncludeUserClaimsInIdToken = true değilse... (alttaki nota bak) 
         public static IEnumerable<IdentityResource> IdentityResources
             => new IdentityResource[]
             {
@@ -20,24 +25,34 @@ namespace Raw.IdentityServer
                     name: "profile",
                     userClaims: new []{ "name", "email", "website" }),
                 new IdentityResource(
-                    name: "secret", // 'scope' ismi
-                    userClaims: new []{ "secret.level", "secret.xp", "secret.mastery", "secret.path" }), // bu scope'a bağlı claim'ler
+                    name: "secret", // 'scope' ismi ve scope ile alınabilecek claim'ler
+                    userClaims: new []{ "secret.level", "secret.xp", "secret.mastery", "secret.path" })
             };
 
+        // ApiScope/ApiResource olarak tanımlanan bilgiler access_token içerisinde tutulur.
+
+        // "The value(s) of the audience claim will be the name of the API resource."
         public static IEnumerable<ApiResource> ApiResources 
             => new ApiResource[]
         {
-            // "The value(s) of the audience claim will be the name of the API resource."
             new ApiResource(name: "Raw.IdentityServer.Api2")
             {
                 Scopes = new [] { "Raw.IdentityServer.Api2" }
             }
         };
 
+        // Tanımlar access_token içerisinde tutulur.
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-                new ApiScope("Raw.IdentityServer.Api2")
+                new ApiScope("Raw.IdentityServer.Api2"),
+                
+                // Yeni bir scope tanımlıyorum. İsmi "area51":
+                new ApiScope("area51", new List<string>
+                {
+                    "area51.access_level",
+                    "area51.department"
+                }) 
             };
 
         public static IEnumerable<Client> GetClients => new Client[]
@@ -71,14 +86,17 @@ namespace Raw.IdentityServer
                     IdentityServerConstants.StandardScopes.OpenId, // "openid", 
                     IdentityServerConstants.StandardScopes.Profile, // "profile", 
                     "Raw.IdentityServer.Api2",
-                    "secret"
+                    "secret",
+                    "area51"
                 },
 
                 // İstenen scope ile ilgili bilgiler (Claim'ler) id_token içerisinde tutulur.
                 // Normalde kullanıcı claim'leri arkaplada userinfo enpoint'ine istek atılarak elde edilir.
                 // Avantajı iki ayrı noktaya request atmak yerine (network latency) te noktadan bütün bilgileri alabilmek.
                 // Dezavantajı id_token'ın şişmesi.
-                AlwaysIncludeUserClaimsInIdToken = true
+                
+                // Varsayılan olarak false.
+                //AlwaysIncludeUserClaimsInIdToken = false
             }
         };
     }

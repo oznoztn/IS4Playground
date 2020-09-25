@@ -33,7 +33,10 @@ namespace Raw.IdentityServer
                     new Claim("secret.level", "master", ClaimValueTypes.String),
                     new Claim("secret.xp", "12", ClaimValueTypes.Integer),
                     new Claim("secret.mastery", "archery", ClaimValueTypes.String),
-                    new Claim("secret.path", "tao", ClaimValueTypes.String)
+                    new Claim("secret.path", "tao", ClaimValueTypes.String),
+
+                    new Claim("area51.department", "Department X", ClaimValueTypes.String),
+                    new Claim("area51.access_level", "6", ClaimValueTypes.Integer)
                 });
             }
 

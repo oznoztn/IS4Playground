@@ -29,6 +29,8 @@ namespace Raw.IdentityServer.Mvc
                 })
                 .AddOpenIdConnect("oidc", config =>
                 {
+                    // Alttaki 1. nota bak.
+
                     config.Authority = RawApplicationUrl.IdentityServer;
 
                     config.ClientId = RawClientId.Mvc;
@@ -41,7 +43,7 @@ namespace Raw.IdentityServer.Mvc
                     // "secret" scope'unu istiyoruz.
                     // IS tarafýnda yetkilendirme tanýmlanmamýþsa hata alýrsýn.
                     config.Scope.Add("secret");
-                    // NOT 1.
+                    config.Scope.Add("area51");
                 });
 
             services.AddControllersWithViews();
