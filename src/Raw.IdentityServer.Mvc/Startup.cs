@@ -38,6 +38,9 @@ namespace Raw.IdentityServer.Mvc
 
                     config.SaveTokens = true;
                     
+                    // "secret" scope'unu istiyoruz.
+                    // IS tarafýnda yetkilendirme tanýmlanmamýþsa hata alýrsýn.
+                    config.Scope.Add("secret");
                     // NOT 1.
                 });
 

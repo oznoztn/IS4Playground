@@ -15,10 +15,13 @@ namespace Raw.IdentityServer
                 //new IdentityResources.Profile(), 
                 new IdentityResource(
                     name: "openid",
-                    userClaims: new List<string>() { "sub" }),
+                    userClaims: new []{ "sub" }),
                 new IdentityResource(
                     name: "profile",
-                    userClaims: new[] { "name", "email", "website" })
+                    userClaims: new []{ "name", "email", "website" }),
+                new IdentityResource(
+                    name: "secret", // 'scope' ismi
+                    userClaims: new []{ "secret.level", "secret.xp", "secret.mastery", "secret.path" }), // bu scope'a bağlı claim'ler
             };
 
         public static IEnumerable<ApiResource> ApiResources 
@@ -28,7 +31,7 @@ namespace Raw.IdentityServer
             new ApiResource(name: "Raw.IdentityServer.Api2")
             {
                 Scopes = new [] { "Raw.IdentityServer.Api2" }
-            }, 
+            }
         };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -67,8 +70,15 @@ namespace Raw.IdentityServer
                 {
                     IdentityServerConstants.StandardScopes.OpenId, // "openid", 
                     IdentityServerConstants.StandardScopes.Profile, // "profile", 
-                    "Raw.IdentityServer.Api2"
-                }
+                    "Raw.IdentityServer.Api2",
+                    "secret"
+                },
+
+                // İstenen scope ile ilgili bilgiler (Claim'ler) id_token içerisinde tutulur.
+                // Normalde kullanıcı claim'leri arkaplada userinfo enpoint'ine istek atılarak elde edilir.
+                // Avantajı iki ayrı noktaya request atmak yerine (network latency) te noktadan bütün bilgileri alabilmek.
+                // Dezavantajı id_token'ın şişmesi.
+                AlwaysIncludeUserClaimsInIdToken = true
             }
         };
     }

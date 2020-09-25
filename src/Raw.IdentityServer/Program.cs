@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityModel;
 using Microsoft.AspNetCore.Hosting;
@@ -22,10 +23,18 @@ namespace Raw.IdentityServer
             {
                 UserManager<IdentityUser> userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-                userManager
-                    .CreateAsync(new IdentityUser("username"), "password")
-                    .GetAwaiter()
-                    .GetResult();
+                var test = new IdentityUser("test");
+                userManager.CreateAsync(test, "password").GetAwaiter().GetResult();
+
+                var ozan = new IdentityUser("ozan");
+                userManager.CreateAsync(ozan, "password");
+                userManager.AddClaimsAsync(ozan, new List<Claim>()
+                {
+                    new Claim("secret.level", "master", ClaimValueTypes.String),
+                    new Claim("secret.xp", "12", ClaimValueTypes.Integer),
+                    new Claim("secret.mastery", "archery", ClaimValueTypes.String),
+                    new Claim("secret.path", "tao", ClaimValueTypes.String)
+                });
             }
 
             host.Run();
