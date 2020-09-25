@@ -81,4 +81,9 @@ namespace Raw.IdentityServer
  * typically by first registering all your scopes (e.g. using the AddInMemoryApiScopes method),
  * and then register the API 1resources (if any) afterwards.
  * The API resources will then reference the prior registered scopes by name.
+ *
+ * OpenID Connect protokolünü kullanacak olan client'ın 'openid' scope'una erişebiliyor olması gerekir.
+ * Dolayısıyla bu scope için IS tarafında tanımlama yapmayı
+ * ve Client'a scope için erişim izni vermeyi unutma (Client.AllowedScopes)
+ *
  */
