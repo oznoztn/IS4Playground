@@ -94,7 +94,7 @@ namespace Raw.IdentityServer
                 // Avantajı tek bir request ile bütün bilgileri alabilmek.
                 // Dezavantajı id_token'ın şişmesi.
 
-                AlwaysIncludeUserClaimsInIdToken = true
+                AlwaysIncludeUserClaimsInIdToken = false
             }
         };
     }

@@ -46,6 +46,8 @@ namespace Raw.IdentityServer.Mvc
                     config.Scope.Add("area51");
                 });
 
+            services.AddHttpClient();
+
             services.AddControllersWithViews();
         }
 
