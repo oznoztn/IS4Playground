@@ -50,7 +50,9 @@ namespace OAuthBasics.Server
 
             services.AddAuthorization();
 
-            services.AddControllersWithViews();
+            services
+                .AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
         }
 
 

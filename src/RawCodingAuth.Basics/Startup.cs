@@ -87,7 +87,9 @@ namespace RawCodingAuth.Basics
             services.AddScoped<IAuthorizationHandler, CustomRequireClaimRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, RequireExperiencePointClaimHandler>();
 
-            services.AddControllersWithViews();
+            services
+                .AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

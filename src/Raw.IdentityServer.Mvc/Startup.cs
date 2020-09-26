@@ -48,7 +48,9 @@ namespace Raw.IdentityServer.Mvc
 
             services.AddHttpClient();
 
-            services.AddControllersWithViews();
+            services
+                .AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

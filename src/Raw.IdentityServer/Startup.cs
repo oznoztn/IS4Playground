@@ -56,7 +56,9 @@ namespace Raw.IdentityServer
             // not recommended for production - you need to store your key material somewhere secure
             identityServerBuilder.AddDeveloperSigningCredential();
 
-            services.AddControllersWithViews();
+            services
+                .AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
