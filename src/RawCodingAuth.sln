@@ -14,6 +14,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAuthBasics.Api", "OAuthBasics.Api\OAuthBasics.Api.csproj", "{436C6814-D3DD-4B0C-882E-1B388A687E9E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "is", "is", "{4395DF57-1BE0-43AC-96C5-3AAD2354595F}"
+	ProjectSection(SolutionItems) = preProject
+		Notes.txt = Notes.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "basics", "basics", "{DBB58F64-2B07-4A29-B0CB-AA4F0B4913C3}"
 EndProject
@@ -25,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raw.IdentityServer", "Raw.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raw.IdentityServer.Mvc", "Raw.IdentityServer.Mvc\Raw.IdentityServer.Mvc.csproj", "{075985CE-0743-4443-88CA-DCEE8CC87230}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raw.IdentityServer.Constants", "Raw.IdentityServer.Constants\Raw.IdentityServer.Constants.csproj", "{53319CCF-4784-49AC-805A-46A0B6B6DD91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raw.IdentityServer.Constants", "Raw.IdentityServer.Constants\Raw.IdentityServer.Constants.csproj", "{53319CCF-4784-49AC-805A-46A0B6B6DD91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,4 @@
+Discovery Document
+Discovery Dokümaný IS tarafýndaki OAuth 2.0 ve OpenId Connect protokolleri için standartlarca belirlenmiþ endpointleri listeler. Dolayýsýyla IS'e gideceksen ilk iþin Discovery Dokümaný'ný almak olsun. 
+
+Dokümaný almak için izlenmesi gereken Request/Response/Response-Parsing adýmlarýný kolaylaþtýrmak için oluþturulmuþ IdentityModel isminde bir kütüphane mevcut.
