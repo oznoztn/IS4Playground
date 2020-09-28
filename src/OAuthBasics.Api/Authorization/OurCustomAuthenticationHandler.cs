@@ -13,27 +13,14 @@ namespace OAuthBasics.Api.Authorization
      * Şu an anonim bir kullanıcı korunan bir kaynağa erişmek istediğinde
      * sunucu 401 UNAUTHORIZED yerine 500 INTERNAL SERVER ERROR döndürüyor.
      *
-     * Bunun nedeni henüz bir Authentication Handler tanımlamadığımızdan kaynaklanıyor.
+     * Bunun nedeni henüz bir Authentication Handler tanımlamamış olmamızdır.
      *
      * Peki hangisini tanımlayacağız?
      *
      * Çünkü, bir düşün, AddCookie diyemeyiz çünkü cookie kullanmıyoruz.
      * AddJwt, AddOAuth da diyemeyiz.. Bunlara da ihtiyacımız yok.
      *
-     *      Hem bizim ilgilendiğimiz tek şey authorization idi, Authentication değil.
-     *      Onu da (custom IAuthorizationRequirement örneği ile) access_token'ı okuyarak yapıyorduk.
-     *
-     *          Her neyse.
-     *
-     * Bu örnekte bizim custom bir authentication handler yazmamız gerekiyor.
-     *
-     * 401 döndürmek dışında hiçbir şey yapmayan.
-     *
-     * Authentication servisi CHALLENGED olmazsan tetiklenmez.
-     * Peki ne zaman 'CHALLENGED' olursun? İstek 401 Döndüğünde. [TODO: clarification required]
-     *
-     * Whenever we fail the authorization, we are going to be challenged.
-     * Whenever we are going to be challenged, this custom authentication handler will be triggered.
+     * Dolayısıyla bu örnekte bizim custom bir authentication handler yazmamız gerekiyor.
      */
 
     public class OurCustomAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
@@ -49,7 +36,23 @@ namespace OAuthBasics.Api.Authorization
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            // her zaman FAIL olmasını istiyoruz. 
+            /*
+             * https://docs.microsoft.com/en-us/aspnet/core/security/authentication/?view=aspnetcore-3.1
+             *
+             * Based on the authentication scheme's configuration and the incoming request context,
+             * authentication handlers:
+
+             * Construct AuthenticationTicket objects representing the user's identity
+             * if authentication is successful.
+             *
+             * Return 'no result' or 'failure' if authentication is unsuccessful.
+             *
+             * Have methods for challenge and forbid actions for when users attempt to access resources:
+             *      They are unauthorized to access (forbid).
+             *      When they are unauthenticated (challenge).
+             *
+             */
+
             return Task.FromResult(AuthenticateResult.Fail("Authentication Failure"));
         }
     }
