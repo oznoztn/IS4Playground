@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -72,6 +74,8 @@ namespace Raw.IdentityServer
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            SeedIdentityServerData(app);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -87,6 +91,45 @@ namespace Raw.IdentityServer
             {
                 endpoints.MapDefaultControllerRoute();
             });
+        }
+
+        private void SeedIdentityServerData(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var persistedGrantDbContext = serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>();
+                var configurationDbContext = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+
+                persistedGrantDbContext.Database.Migrate();
+                configurationDbContext.Database.Migrate();
+
+                if (!configurationDbContext.Clients.Any())
+                {
+                    foreach (var client in IdentityServerConfiguration.GetClients)
+                    {
+                        configurationDbContext.Clients.Add(client.ToEntity());
+                    }
+                    configurationDbContext.SaveChanges();
+                }
+
+                if (!configurationDbContext.IdentityResources.Any())
+                {
+                    foreach (var resource in IdentityServerConfiguration.IdentityResources)
+                    {
+                        configurationDbContext.IdentityResources.Add(resource.ToEntity());
+                    }
+                    configurationDbContext.SaveChanges();
+                }
+
+                if (!configurationDbContext.ApiScopes.Any())
+                {
+                    foreach (var resource in IdentityServerConfiguration.ApiScopes)
+                    {
+                        configurationDbContext.ApiScopes.Add(resource.ToEntity());
+                    }
+                    configurationDbContext.SaveChanges();
+                }
+            }
         }
     }
 }
