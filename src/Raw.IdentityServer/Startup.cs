@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,16 +43,24 @@ namespace Raw.IdentityServer
                 options.LoginPath = "/auth/login";
             });
 
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            const string connectionString = @"Data Source=(LocalDb)\MSSQLLocalDB;database=Raw.IdentityServer;trusted_connection=yes;";
+
             // He says AddIdentityServer instruction adds authentication and authorizations services
-            IIdentityServerBuilder identityServerBuilder =
-                services.AddIdentityServer();
+            IIdentityServerBuilder identityServerBuilder = services.AddIdentityServer();
 
             identityServerBuilder
                 .AddAspNetIdentity<IdentityUser>() // Solves "InvalidOperationException: sub claim is missing"
-                .AddInMemoryIdentityResources(IdentityServerConfiguration.IdentityResources)
-                .AddInMemoryApiScopes(IdentityServerConfiguration.ApiScopes)
-                .AddInMemoryApiResources(IdentityServerConfiguration.ApiResources) // register ApiScopes first
-                .AddInMemoryClients(IdentityServerConfiguration.GetClients);
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = b => 
+                        b.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = b => 
+                        b.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                });
 
             // not recommended for production - you need to store your key material somewhere secure
             identityServerBuilder.AddDeveloperSigningCredential();
