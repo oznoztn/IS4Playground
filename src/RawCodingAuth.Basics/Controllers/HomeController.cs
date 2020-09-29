@@ -24,21 +24,18 @@ namespace RawCodingAuth.Basics.Controllers
 
             List<Claim> grandmaClaims = new List<Claim>()
             {
-                // Senin kim olduğunu GRANDMA söylüyor. Burada OTORİTE o.
-                // Büyükannene göre senin bilgilerin şunlar:
-                
-                // Standart claim'ler
+                // Standard claims:
                 new Claim(ClaimTypes.Name, "Ozan"),
                 new Claim(ClaimTypes.Email, "ozan@ozten.com"),
                 
-                // Büyükannene özel claim'ler.
+                // Non-standard claims:
                 new Claim("grandma.garden", "true")
             };
 
             List<Claim> secretGardenClaims = new List<Claim>()
             {
-                // Bu alttaki bir claim'in ortak olmasına dikkat et.
-                // Demek ki her iki yerle aynı e-mail adresiyle bir bağlantım var.
+                // Alttaki e-mail claim'inin ortak olmasına dikkat et.
+                //   Demek ki her iki yerle aynı e-mail adresiyle bir bağlantım var.
                 new Claim(ClaimTypes.Name, "Ozan ZzZz"),
                 new Claim(ClaimTypes.Email, "ozan@ozten.com"),
 
@@ -50,16 +47,19 @@ namespace RawCodingAuth.Basics.Controllers
             };
 
             // Bu claim'leri baz alarak bir kimlik oluşturuyoruz
-            ClaimsIdentity grandmaIdentity = new ClaimsIdentity(grandmaClaims, authenticationType: "Grandma Identity");
+            ClaimsIdentity grandmaIdentity = 
+                new ClaimsIdentity(grandmaClaims, authenticationType: "Grandma Identity");
 
-            ClaimsIdentity secretGardenIdentity = new ClaimsIdentity(secretGardenClaims, "Secret Garden Identity");
+            ClaimsIdentity secretGardenIdentity = 
+                new ClaimsIdentity(secretGardenClaims, "Secret Garden Identity");
 
-            ClaimsIdentity rolesIdentity = new ClaimsIdentity(roleClaims, "RawCodingAuth Identity");
+            ClaimsIdentity rolesIdentity = 
+                new ClaimsIdentity(roleClaims, "RawCodingAuth Identity");
 
             ClaimsPrincipal userPrincipal = new ClaimsPrincipal(new[]
             {
                 // Birden fazla otorite senin kim olduğuna dair bilgi verebileceğine göre,
-                // ClaimsIdentity'ye sahip olabilirsin.
+                // birden fazla ClaimsIdentity'ye sahip olabilirsin.
                 grandmaIdentity,
                 secretGardenIdentity,
                 rolesIdentity
@@ -76,7 +76,7 @@ namespace RawCodingAuth.Basics.Controllers
              * Claim soyut bir kavramdır. .NET ile alakalı değildir. Bir standarttır.
              *
              * 2)
-             * Claim kullanıcı hakkındaki bilgileri tutan key/val ikililerinden oluşan bir veri yapısıdır.
+             * Claim kullanıcı hakkındaki bilgileri tutan key/val ikilisinden oluşan bir veri yapısıdır.
              *
              * 3)
              * Birden fazla otorite senin kim olduğuna dair bilgi sağlayabilir.
@@ -87,8 +87,8 @@ namespace RawCodingAuth.Basics.Controllers
              * ve kullanıcı (Identity ile gelen) ilgili manager sınıfıyla çekildiğinde
              * otomatik olarak bunları kullanıcıya SET eder.
              *
-             * Buradaki detaylar low-level implementasyon detayları aslında.
-             * Yine de neyin nasıl işlediğini bilmekte fayda var.
+             * Dolayısıyla burada yaptığımız şeyler low-level işlemler aslında.
+             * Yine de neyin nasıl işlediğini bilmekte fayda olabilir.
              *
              * */
         }
