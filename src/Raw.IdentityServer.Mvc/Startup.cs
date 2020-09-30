@@ -23,21 +23,16 @@ namespace Raw.IdentityServer.Mvc
                     options.DefaultSignInScheme = "Raw.IdentityServer.Mvc.Cookie";
                     options.DefaultChallengeScheme = "oidc";
                 })
-                .AddCookie("Raw.IdentityServer.Mvc.Cookie", options =>
-                {
-                    options.Cookie.Name = "Raw.IdentityServer.Mvc.Cookie";
-                })
+                .AddCookie("Raw.IdentityServer.Mvc.Cookie")
                 .AddOpenIdConnect("oidc", config =>
                 {
-                    // Alttaki 1. nota bak.
                     config.Authority = RawApplicationUrl.IdentityServer;
                     config.ClientId = RawClientId.Mvc;
                     config.ClientSecret = RawClientSecret.Mvc;
                     config.ResponseType = "code";
                     config.SaveTokens = true;
-                    
-                    // "secret" scope'unu istiyoruz.
-                    // IS tarafýnda yetkilendirme tanýmlanmamýþsa hata alýrsýn.
+
+                    // Requested scopes:
                     config.Scope.Add("secret");
                     config.Scope.Add("area51");
                 });
@@ -76,4 +71,5 @@ namespace Raw.IdentityServer.Mvc
  * OAuthBasics.Client'deki AddOAuth'da belirttiðimiz endpoint'leri burada belirtmemize gerek yok.
  * AddOpenIdConnect servisi o bilgilere Discovery Dokümaný ile vakýf zaten.
  *
+ * Ýstenen scope'lar IS tarafýnda bu client'e atanmamýþsa hata alýrsýn.
  */
