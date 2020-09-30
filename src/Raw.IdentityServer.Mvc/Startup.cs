@@ -25,19 +25,15 @@ namespace Raw.IdentityServer.Mvc
                 })
                 .AddCookie("Raw.IdentityServer.Mvc.Cookie", options =>
                 {
-                    options.LoginPath = "";
+                    options.Cookie.Name = "Raw.IdentityServer.Mvc.Cookie";
                 })
                 .AddOpenIdConnect("oidc", config =>
                 {
                     // Alttaki 1. nota bak.
-
                     config.Authority = RawApplicationUrl.IdentityServer;
-
                     config.ClientId = RawClientId.Mvc;
                     config.ClientSecret = RawClientSecret.Mvc;
-
                     config.ResponseType = "code";
-
                     config.SaveTokens = true;
                     
                     // "secret" scope'unu istiyoruz.

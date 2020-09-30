@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using IdentityServer4.Models;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Raw.IdentityServer.Models;
@@ -14,13 +12,16 @@ namespace Raw.IdentityServer.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IIdentityServerInteractionService _identityServerInteractionService;
 
         public AuthController(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IIdentityServerInteractionService identityServerInteractionService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _identityServerInteractionService = identityServerInteractionService;
         }
 
         public async Task<IActionResult> Login(string returnUrl)
@@ -31,6 +32,20 @@ namespace Raw.IdentityServer.Controllers
             };
 
             return View(vm);
+        }
+
+        public async Task<IActionResult> Logout(string logoutId)
+        {
+            await _signInManager.SignOutAsync();
+
+            LogoutRequest logoutRequest = await _identityServerInteractionService.GetLogoutContextAsync(logoutId);
+
+            if (string.IsNullOrWhiteSpace(logoutRequest.PostLogoutRedirectUri))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return Redirect(logoutRequest.PostLogoutRedirectUri);
         }
 
         [HttpPost]
