@@ -79,7 +79,11 @@ namespace Raw.IdentityServer
                     new Secret(RawClientSecret.Mvc.ToSha256())
                 },
                 RedirectUris = { "https://localhost:44399/signin-oidc" },
-                PostLogoutRedirectUris = { "https://localhost:44399/signout-callback-oidc" },
+                PostLogoutRedirectUris =
+                {
+                    "https://localhost:44399/signout-callback-oidc",
+                    "https://localhost:44399/good-bye"
+                },
                 AllowedScopes =
                 {
                     IdentityServerConstants.StandardScopes.OpenId, // "openid", 

@@ -31,6 +31,7 @@ namespace Raw.IdentityServer.Mvc
                     config.ClientSecret = RawClientSecret.Mvc;
                     config.ResponseType = "code";
                     config.SaveTokens = true;
+                    config.SignedOutRedirectUri = "/good-bye";
 
                     // Requested scopes:
                     config.Scope.Add("secret");

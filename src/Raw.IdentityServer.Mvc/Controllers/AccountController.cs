@@ -15,5 +15,11 @@ namespace Raw.IdentityServer.Mvc.Controllers
             // we pass the authc schemes from which the user signs out:
             return SignOut("Raw.IdentityServer.Mvc.Cookie", "oidc");
         }
+
+        [Route("/good-bye")]
+        public async Task<IActionResult> GoodBye()
+        {
+            return View();
+        }
     }
 }
